@@ -1,0 +1,410 @@
+{{ 'banner.css' | asset_url | stylesheet_tag }}
+
+<section>
+  <div class="container">
+    {% if section.settings.image != blank %}
+      <div class="image-banner-container">
+        <div class="overlay"></div>
+        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt}}">
+      </div>
+    {% else %}
+      <div class="image-banner-container">
+        <div class="overlay"></div>
+        {% capture current %}{% cycle 1,2 %}{% endcapture %}
+        {% comment %} this is a placeholder image {% endcomment %}
+        {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {% endif %}
+
+    {% comment %} rendering the blocks {% endcomment %}
+    <div class="heading-text">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'heading' %}
+            <h1 class="heading-title">{{ block.settings.title }}</h1>
+          {% when 'text' %}
+            <p class="store-description">{{ block.settings.description }}</p>
+          {% when 'url' %}
+            <a class="button" href="{{ block.settings.button_link}}">{{ block.settings.button_label }}</a>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  section .container {
+    position: relative;
+    width: 100vw;
+    height: {{ section.settings.banner_size }}px;
+    margin-bottom: {{ section.settings.banner_bottom_margin }}px;
+    overflow: hidden;
+  }
+
+  .image-banner-container img,
+  .image-banner-container svg {
+    z-index: -2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .image-banner-container .overlay {
+    background: {{ section.settings.overlay_color }};
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    z-index: -1;
+  }
+
+  {% for block in section.blocks %}
+    section .heading-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+    }
+
+    .heading-text .heading-title {
+      font-size: {{ block.settings.header_font_size }}px;
+      color: {{ block.settings.header_font_color }};
+      font-weight: {{ block.settings.header_font_weight }};
+      transform: translateY({{ block.settings.header_y_position }}px);
+    }
+
+    .heading-text .store-description {
+      font-size: {{ block.settings.description_font_size }}px;
+      color: {{ block.settings.description_font_color }};
+      font-weight: {{ block.settings.description_font_weight }};
+    }
+
+    .heading-text .button {
+      color: {{ block.settings.button_font_color }};
+      background: {{ block.settings.button_background_color }};
+      padding: {{ block.settings.button_size }}px {{ block.settings.button_size | times: 3 }}px;
+      font-size: {{ block.settings.button_font_size }}px;
+      margin: 2rem;
+      border-radius: {{ block.settings.button_border_radius }}px;
+      transition: all 0.{{ block.settings.button_transition_duration }}s ease-out;
+    }
+
+    {% if block.settings.button_show_border == true %}
+      .heading-text .button {
+        border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
+      }
+      
+      .heading-text .button:hover {
+        border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_hover_color }};
+      }
+    {% endif %}
+
+    {% if block.settings.transparent_button == true %}
+      .heading-text .button {
+        background: transparent !important;
+      }
+    {% endif %}
+
+    .heading-text .button:hover {
+      box-shadow: var(--shadow);
+      color: {{ block.settings.button_font_hover_color }};
+      background: {{ block.settings.button_hover_color }};
+    }
+  {% endfor %}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Banner",
+  "class": "banner-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image Banner"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image Overlay Opacity",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "banner_bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "banner_size",
+      "label": "Image Banner Size",
+      "options": [
+        {
+          "value": "400",
+          "label": "Small"
+        },
+        {
+          "value": "600",
+          "label": "Medium"
+        },
+        {
+          "value": "800",
+          "label": "Large"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Main Heading",
+          "label": "Heading Title"
+        },
+        {
+          "type": "range",
+          "id": "header_font_size",
+          "min": 24,
+          "max": 128,
+          "step": 2,
+          "unit": "px",
+          "label": "Header Font Size",
+          "default": 50
+        },
+        {
+          "type": "number",
+          "id": "header_y_position",
+          "label": "Header Y Position",
+          "default": 0
+        },
+        {
+          "type": "select",
+          "id": "header_font_weight",
+          "label": "Header Font Weight",
+          "options": [
+            {
+              "value": "100",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "color",
+          "id": "header_font_color",
+          "label": "Header Font Color",
+          "default": "#000"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "description",
+          "default": "Store Description",
+          "label": "Store Description"
+        },
+        {
+          "type": "range",
+          "id": "description_font_size",
+          "min": 14,
+          "max": 64,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "description_font_weight",
+          "label": "Font Weight",
+          "options": [
+            {
+              "value": "100",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "color",
+          "id": "description_font_color",
+          "label": "Font Color",
+          "default": "#000"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Shop Now",
+          "label": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button URL"
+        },
+        {
+          "type": "color",
+          "id": "button_font_color",
+          "label": "Font Color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Background Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_font_hover_color",
+          "label": "Hover Font Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_color",
+          "label": "Hover Background Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "range",
+          "id": "button_transition_duration",
+          "min": 1,
+          "max": 99,
+          "step": 1,
+          "unit": "ms",
+          "label": "Transition Duration",
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "button_border_radius",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Border Radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "button_size",
+          "min": 5,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "button_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Font Size",
+          "default": 16
+        },
+        {
+          "type": "checkbox",
+          "id": "transparent_button",
+          "label": "Transparent Button",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_show_border",
+          "label": "Show Button Border",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "button_border_thickness",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "label": "Border Thickness",
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button Border Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_border_hover_color",
+          "label": "Button Border Hover Color",
+          "default": "#f57224"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "image",
+      "name": "Banner"
+    }
+  ]
+}
+{% endschema %}

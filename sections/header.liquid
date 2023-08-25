@@ -1,0 +1,317 @@
+<nav>
+  <div>
+    <div class="navbar">
+      <a class="store-name" href="#">{{ section.settings.store_name }}</a>
+      {% comment %} nav list {% endcomment %}
+      <ul>
+        {% for link in linklists['main-menu'].links %}
+          {% assign child_list_handle = link.title | handleize %}
+          {% if linklists[child_list_handle].links != blank %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+            [
+            {%- for childlink in linklists[child_list_handle].links %}
+              <li>
+                <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+              </li>
+            {% endfor -%}
+            ]
+          {% else %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+
+      {% comment %} search {% endcomment %}
+      {% if section.settings.show_search_bar == true %}
+        <form class="search" action="/search" method="GET" role="search">
+          <input
+            type="text"
+            name="q"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ section.settings.search_placeholder }}"
+          >
+        </form>
+      {% endif %}
+
+      {% comment %} customer login {% endcomment %}
+      <ul>
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <li>
+              <a href="{{ routes.account_url }}">Account</a>
+            </li>
+            <li>
+              <a href="{{ routes.account_logout_url }}">Logout</a>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ routes.account_login_url }}">Login</a>
+            </li>
+            <li>
+              <a href="{{ routes.account_register_url }}">Register</a>
+            </li>
+          {% endif %}
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% style %}
+  nav {
+    margin-bottom: {{ section.settings.navbar_bottom_margin }}px;
+  }
+
+  .navbar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: {{section.settings.navbar_background_color }};
+    padding: {{ section.settings.navbar_padding_y }}px {{ section.settings.navbar_padding_x }}px;
+  }
+
+  .navbar .store-name {
+    font-size: {{ section.settings.store_name_size }}px;
+    color: {{ section.settings.store_name_color }};
+    font-weight: {{ section.settings.store_name_font_weight }};
+    transition: color 0.15s ease;
+  }
+
+  .navbar .store-name:hover {
+    color: {{ section.settings.store_name_hover_color }};
+  }
+
+  ul {
+    display: flex;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  li a {
+    margin-right: 2rem;
+    font-size: {{ section.settings.navlist_font_size }}px;
+    font-weight: {{ section.settings.navlist_font_weight }};
+    color: {{ section.settings.navlist_font_color }};
+    transition: color 0.15s ease;
+  }
+
+  li a:hover {
+    color: {{ section.settings.navlist_hover_color }};
+  }
+
+  .navbar .search {
+    padding: {{ section.settings.search_bar_size }}px {{ section.settings.search_bar_size | times: 3 }}px;
+    background: {{ section.settings.search_bar_background_color}};
+    border-radius: {{ section.settings.search_bar_border_radius }}px;
+  }
+
+  .search input {
+    background: {{ section.settings.search_bar_background_color}};
+    color: {{ section.settings.search_bar_font_color}};
+  }
+
+  {% if section.settings.search_bar_show_background == true %}
+    .navbar .search {
+      border: 1px solid {{ section.settings.search_bar_border_color }};
+    }
+  {% endif %}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Navbar",
+  "class": "header",
+  "settings": [
+    {
+      "type": "range",
+      "id": "navbar_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "navbar_padding_x",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Side Paddings",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "navbar_bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "navbar_background_color",
+      "label": "Navbar Background",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "default": "Store name",
+      "label": "Store Name"
+    },
+    {
+      "type": "select",
+      "id": "store_name_font_weight",
+      "label": "Store Name Font Weight",
+      "options": [
+        {
+          "value": "100",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "store_name_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "store_name_color",
+      "label": "Store Name Font Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "store_name_hover_color",
+      "label": "Store Name Hover Color",
+      "default": "#f57224"
+    },
+    {
+      "type": "range",
+      "id": "navlist_font_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "navlist_font_color",
+      "label": "Menu Font Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "navlist_hover_color",
+      "label": "Menu Hover Color",
+      "default": "#f57224"
+    },
+    {
+      "type": "select",
+      "id": "navlist_font_weight",
+      "label": "Menu Font Weight",
+      "options": [
+        {
+          "value": "100",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "default": "Search",
+      "label": "Search Bar Placeholder"
+    },
+    {
+      "type": "color",
+      "id": "search_bar_font_color",
+      "label": "Search Bar Font Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "search_bar_border_color",
+      "label": "Search Bar Border Color",
+      "default": "#ccc"
+    },
+    {
+      "type": "color",
+      "id": "search_bar_background_color",
+      "label": "Search Bar Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_bar",
+      "label": "Show Search Bar",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "search_bar_show_background",
+      "label": "Show Search Bar Border",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "search_bar_size",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Bar Size",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "search_bar_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Bar Border-Radius",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

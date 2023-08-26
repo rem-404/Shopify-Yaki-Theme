@@ -1,51 +1,455 @@
-XX
+<section>
+  <div class="featured-collection-container">
+    {% if section.settings.show_collection_title == true %}
+      <h2 class="featured-collection-title">{{ section.settings.title }}</h2>
+    {% endif %}
 
-<section class="container py-4">
-  <h2 class="text-center my-3">{{ section.settings.title }}</h2>
-  <div class="row">
-    {% for product in collections[section.settings['featured--collection']].products %}
-      {% assign image = product.featured_media.preview_image %}
-      <div class="col py-4">
-        <div class="card" style="width: 18rem">
-          {% if image != blank %}
-            <img class="card-img-top" src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
-          {% else %}
-            {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-          {% endif %}
-          <div class="card-body">
-            <h3>
-              <a href="{{ product.url }}">{{ product.title }}</a>
-            </h3>
-            <p>{{ product.price | money }}</p>
+    <div class="card-container">
+      {% for product in collections[section.settings['featured--collection']].products %}
+        {% assign image = product.featured_media.preview_image %}
+
+        <div class="card">
+          <div class="card-header">
+            {% if image != blank %}
+              <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+            {% endif %}
+
+            <div class="card-body">
+              <h3 class="card-product-title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              <h3 class="card-product-price">
+                <p>{{ product.price | money }}</p>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
-{% schema %}
-  {
-    "name": "Featured Collection",
-    "class": "featured-collection",
-    "settings": [
-      {
-        "type": "collection",
-        "id": "featured--collection",
-        "label": "Collection"
-      },
-      {
-        "type": "text",
-        "id": "title",
-        "label": "Title",
-        "default": "Featured Collection"
-      }
-    ],
-    "presets": [
-      {
-        "category": "Collection",
-        "name": "Featured Collection"
-      }
-    ]
+{% style %}
+  section .featured-collection-container {
+    padding: 0 {{ section.settings.featured_collection_padding_x | times: 3 }}px;
+    padding-bottom: {{ section.settings.featured_collection_padding_y | times: 3 }}px !important;
+    background: {{ section.settings.featured_collection_background_color }};
+    height: auto;
   }
+
+  section .featured-collection-title {
+    font-size: {{ section.settings.collection_title_font_size }}px;
+    padding: {{ section.settings.collection_title_padding_y }}px 0;
+    text-align: {{ section.settings.collection_title_position_x }};
+    font-weight: {{ section.settings.collection_title_font_weight }};
+    color: {{ section.settings.collection_title_font_color }};
+  }
+
+  section .card-container {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.collection_cards_per_row }}, 1fr);
+    align-items: center;
+    gap: {{ section.settings.collection_cards_gap }}px;
+  }
+
+  .card-container .card {
+    border-radius: {{ section.settings.collection_cards_border_radius }}px;
+    overflow: hidden;
+    background: {{ section.settings.collection_cards_body_color }};
+  }
+
+  /* IF CARD SHADOW */
+  {% if section.settings.show_collection_card_shadow == true %}
+    .card-container .card {
+      box-shadow: {{ section.settings.collection_cards_shadow_position_x }}px {{ section.settings.collection_cards_shadow_position_y }}px {{ section.settings.collection_cards_shadow_spread_size}}px {{ section.settings.collection_cards_shadow_color }};
+    }
+  {% endif %}
+
+  /* IF CARD BORDER */
+  {% if section.settings.show_collection_card_border == true %}
+    .card-container .card {
+      border: {{ section.settings.collection_cards_border_thickness }}px solid {{ section.settings.collection_cards_border_color }};
+    }
+  {% endif %}
+
+  .card img {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+  }
+
+  .card .card-body {
+    padding: {{ section.settings.collection_cards_inner_padding }}px;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .card-body h3 {
+    text-align: {{ section.settings.collection_title_and_price_position }};
+  }
+
+  .card-product-title a {
+    color: {{ section.settings.collection_cards_product_title }};
+    font-weight: {{ section.settings.collection_cards_product_font_weight }};
+    font-size: {{ section.settings.collection_cards_product_title_font_size }}px;
+  }
+
+  /* IF HOVER ANIMATION */
+  {% if section.settings.show_card_hover_animation == true %}
+    .card-container .card:hover {
+      transform: scale(1.03);
+      transition: .3s ease;
+    }
+
+    .card-product-title a:hover {
+      color: {{ section.settings.collection_cards_product_title_hover }};
+      transition: .3s ease;
+    }
+  {% endif %}
+
+  .card-product-price p {
+    font-size: {{ section.settings.collection_cards_product_price_font_size }}px;
+    color: {{ section.settings.collection_cards_price_title }};
+    font-weight: {{ section.settings.collection_cards_price_font_weight }};
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "class": "featured-collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "featured--collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "featured_collection_padding_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Padding X",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "featured_collection_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Bottom Padding",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "featured_collection_background_color",
+      "label": "Section Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_title",
+      "label": "Show Collection Title",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "collection_title_font_size",
+      "min": 12,
+      "max": 64,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "collection_title_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Title Padding Y",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "collection_title_position_x",
+      "label": "Title Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "collection_title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        {
+          "value": "100",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "collection_title_font_color",
+      "label": "Title Color",
+      "default": "#000"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_card_border",
+      "label": "Show Card Border",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_per_row",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "unit": "pcs",
+      "label": "Cards per Row",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_inner_padding",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Inner Padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Gap",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_border_thickness",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Border Thickness",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_border_color",
+      "label": "Card Border Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_body_color",
+      "label": "Card Body Color",
+      "default": "#fff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_card_hover_animation",
+      "label": "Show Hover Animation",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_product_title",
+      "label": "Product Title Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_product_title_hover",
+      "label": "Product Title Hover Color",
+      "default": "#f57224"
+    },
+    {
+      "type": "select",
+      "id": "collection_title_and_price_position",
+      "label": "Product Title Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "collection_cards_product_font_weight",
+      "label": "Product Title Font Weight",
+      "options": [
+        {
+          "value": "100",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_product_title_font_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_price_title",
+      "label": "Product Price Color",
+      "default": "#000"
+    },
+    {
+      "type": "select",
+      "id": "collection_cards_price_font_weight",
+      "label": "Product Price Font Weight",
+      "options": [
+        {
+          "value": "100",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_product_price_font_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Price Font Size",
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_card_shadow",
+      "label": "Show Cards Shadow",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_shadow_color",
+      "label": "Cards Shadow Color",
+      "default": "#ccc"
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_spread_size",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Spread",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_position_y",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Position Y",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_position_x",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Position X",
+      "default": 0
+    }
+
+  ],
+  "presets": [
+    {
+      "category": "collection",
+      "name": "Featured Collection"
+    }
+  ]
+}
 {% endschema %}

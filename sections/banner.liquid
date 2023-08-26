@@ -1,7 +1,7 @@
 {{ 'banner.css' | asset_url | stylesheet_tag }}
 
 <section>
-  <div class="container">
+  <div class="banner-container">
     {% if section.settings.image != blank %}
       <div class="image-banner-container">
         <div class="overlay"></div>
@@ -33,7 +33,7 @@
 </section>
 
 {% style %}
-  section .container {
+  section .banner-container {
     position: relative;
     width: 100vw;
     height: {{ section.settings.banner_size }}px;
@@ -402,7 +402,7 @@
   ],
   "presets": [
     {
-      "category": "image",
+      "category": "banner",
       "name": "Banner"
     }
   ]

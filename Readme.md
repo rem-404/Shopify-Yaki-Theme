@@ -1,3 +1,3 @@
 Shopify Yaki Theme
 
-Base on dedut theme, customizable shopify theme
+Base on dedut theme, with mostly customizable ui

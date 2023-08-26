@@ -1,25 +1,43 @@
 <section>
-  <form class="search" action="/search" method="GET" role="search">
-    <input
-      type="text"
-      name="q"
-      value="{{ search.terms | escape }}"
-      placeholder="{{ section.settings.search_placeholder }}"
-    >
-  </form>
+  <div class="search-bar-container">
+    <form class="search" action="/search" method="GET" role="search">
+      <input
+        type="text"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ section.settings.search_placeholder }}"
+      >
+    </form>
+  </div>
 </section>
 
 {% style %}
-  section .search {
+  section .search-bar-container {
+    display: flex;
+    justify-content: {{ section.settings.searchbar_position }};
+    background: {{ section.settings.search_bar_container_color }};
+    padding: {{ section.settings.search_bar_margin }}px;
+    padding-bottom: {{section.settings.search_bar_margin_bottom }}px;
+  }
+
+  .search-bar-container .search {
     padding: {{ section.settings.search_bar_size }}px {{ section.settings.search_bar_size | times: 3 }}px;
     background: {{ section.settings.search_bar_background_color}};
     border-radius: {{ section.settings.search_bar_border_radius }}px;
+    width: {{ section.settings.search_bar_width }}vw;
   }
 
   .search input {
     background: {{ section.settings.search_bar_background_color}};
-    color: {{ section.settings.search_bar_font_color}};
+    color: {{ section.settings.search_bar_font_color }};
+    width: {{ section.settings.search_bar_width  | minus: 5 }}vw;
   }
+
+  {% if section.settings.search_bar_show_border == true %}
+    .search-bar-container .search {
+      border: 1px solid {{ section.settings.search_bar_border_color }};
+    }
+  {% endif %}
 {% endstyle %}
 
 {% schema %}
@@ -52,22 +70,52 @@
       "default": "#fff"
     },
     {
-      "type": "checkbox",
-      "id": "show_search_bar",
-      "label": "Show Search Bar",
-      "default": true
+      "type": "color",
+      "id": "search_bar_container_color",
+      "label": "Search Bar Container Color",
+      "default": "#fff"
+    },
+    {
+      "type": "select",
+      "id": "searchbar_position",
+      "label": "Search Bar Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
     },
     {
       "type": "checkbox",
-      "id": "search_bar_show_background",
+      "id": "search_bar_show_border",
       "label": "Show Search Bar Border",
       "default": true
     },
     {
       "type": "range",
+      "id": "search_bar_width",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Search Bar Width",
+      "default": 20
+    },
+    {
+      "type": "range",
       "id": "search_bar_size",
       "min": 0,
-      "max": 50,
+      "max": 20,
       "step": 1,
       "unit": "px",
       "label": "Search Bar Size",
@@ -82,6 +130,26 @@
       "unit": "px",
       "label": "Search Bar Border-Radius",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "search_bar_margin",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Bar Margin",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "search_bar_margin_bottom",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Search Bar Margin Bottom",
+      "default": 10
     }
   ],
   "presets": [

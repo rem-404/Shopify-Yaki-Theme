@@ -1,0 +1,587 @@
+
+<section>
+  <div class="banner-area" id="banner">
+    <div class="slider-{{ section.id }}">
+
+      {% comment %} BLOCKS {% endcomment %}
+      <div class="text-overlay-{{ section.id }}">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'heading_text'%}
+              <h1>{{ block.settings.heading_title }}</h1>
+            {% when 'text' %}
+              <p class="description-1">{{ block.settings.heading_description }}</p>
+            {% when 'url' %}
+              <a class="button" href="{{ block.settings.button_link}}">{{ block.settings.button_label }}</a>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      <div class="overlay-{{ section.id }}"></div>
+      <div class="slides">
+        {% comment %} RADIO BUTTONS FOR IMAGE SLIDER {% endcomment %}
+        <input type="radio" name="radio-btn" id="radio-1">
+        <input type="radio" name="radio-btn" id="radio-2">
+        <input type="radio" name="radio-btn" id="radio-3">
+        <input type="radio" name="radio-btn" id="radio-4">
+
+        {% comment %} IMAGE SLIDER START {% endcomment %}
+        <div class="slide first">
+          <img src="{{ section.settings.image_1 | img_url: 'master'}}" alt="">
+        </div>
+        <div class="slide">
+          <img src="{{ section.settings.image_2 | img_url: 'master'}}" alt="">
+        </div>
+        <div class="slide">
+          <img src="{{ section.settings.image_3 | img_url: 'master'}}" alt="">
+        </div>
+        <div class="slide">
+          <img src="{{ section.settings.image_4 | img_url: 'master'}}" alt="">
+        </div>
+      
+        {% comment %} SLIDER AUTO NAVIGATION {% endcomment %}
+        <div class="auto-navigation">
+          <div class="auto-btn-1"></div>
+          <div class="auto-btn-2"></div>
+          <div class="auto-btn-3"></div>
+          <div class="auto-btn-4"></div>
+        </div>
+
+        {% comment %} SLIDER MANUAL NAVIGATION {% endcomment %}
+        <div class="manual-nagivation">
+          <label for="radio-1" class="manual-btn"></label>
+          <label for="radio-2" class="manual-btn"></label>
+          <label for="radio-3" class="manual-btn"></label>
+          <label for="radio-4" class="manual-btn"></label>
+        </div>
+    </div>
+    {% comment %} IMAGE SLIDER END {% endcomment %}
+  </div>
+</section>
+
+
+{% style %}
+  /* SCHEMA AND BLOCKS SETTINGS */
+  .text-overlay-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 90;
+  }
+
+  /* OVERLAY */
+  .overlay-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: {{ section.settings.image_slider_overlay_color }};
+    opacity: {{ section.settings.image_slider_overlay_opacity | divided_by: 100.0 }};
+  }
+
+  /* IMAGE SLIDER HEIGHT */
+  {% if section.settings.image_slider_banner_size == 900 %}
+    .slider-{{ section.id }} {
+      height: 100vh !important;
+    }
+  {% else %}
+    .slider-{{ section.id }} {
+      height: {{ section.settings.image_slider_banner_size }}px !important;
+    }
+  {% endif %}
+
+
+  /* IMAGE SLIDER START */
+  .slider-{{ section.id }} {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background: {{ section.settings.image_slider_background_color }};
+  }
+
+  .slides {
+    width: 800%;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 20%;
+    transition: 1s;
+  }
+
+  .slider-{{ section.id }} input {
+    display: none;
+  }
+
+  .slide img {
+    width: 65%;
+    height: 100vh;
+    object-fit: cover;
+  }
+
+  /* slider buttons */
+  .manual-nagivation {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+
+    z-index: 99;
+  }
+
+  .manual-btn {
+    border: 2px solid {{ section.settings.image_slide_indicator_border }};
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.30s;
+  }
+
+  .manual-btn:not(:last-child) {
+    margin-right: 40px;
+  }
+
+  .manual-btn:hover {
+    background: #fff;
+  }
+
+  #radio-1:checked ~ .first {
+    margin-left: 0;
+  }
+
+  #radio-2:checked ~ .first {
+    margin-left: -20%;
+  }
+
+  #radio-3:checked ~ .first {
+    margin-left: -40%;
+  }
+
+  #radio-4:checked ~ .first {
+    margin-left: -60%;
+  }
+
+  .auto-navigation {
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .auto-navigation div {
+    border: 2px solid {{ section.settings.image_slide_indicator_border }};
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .auto-navigation div:not(:last-child) {
+    margin-right: 40px;
+  }
+
+  #radio-1:checked ~ .auto-navigation .auto-btn-1 {
+    background: {{ section.settings.image_slide_indicator_background }};
+  }
+
+  #radio-2:checked ~ .auto-navigation .auto-btn-2 {
+    background: {{ section.settings.image_slide_indicator_background }};
+  }
+
+  #radio-3:checked ~ .auto-navigation .auto-btn-3 {
+    background: {{ section.settings.image_slide_indicator_background }};
+  }
+
+  #radio-4:checked ~ .auto-navigation .auto-btn-4 {
+    background: {{ section.settings.image_slide_indicator_background }};
+  }
+  /* IMAGE SLIDER END */
+  {% for block in section.blocks %}
+    .text-overlay-{{ section.id }} h1 {
+      font-size: {{ block.settings.heading_title_size }}px;
+      font-weight: {{ block.settings.heading_font_weight }};
+      color: {{ block.settings.heading_font_color }};
+      transform: translateY({{ block.settings.heading_y_position }}px);
+    }
+
+    .text-overlay-{{ section.id }} .description-1 {
+      font-size: {{ block.settings.heading_description_font_size }}px;
+      font-weight: {{ block.settings.heading_description_font_weight }};
+      color: {{ block.settings.heading_description_color }};
+    }
+
+    /* BUTTON */
+    .text-overlay-{{ section.id }} .button {
+      color: {{ block.settings.button_font_color }};
+      background: {{ block.settings.button_background_color }};
+      padding: {{ block.settings.button_size }}px {{ block.settings.button_size | times: 3 }}px;
+      font-size: {{ block.settings.button_font_size }}px;
+      margin: 2rem;
+      border-radius: {{ block.settings.button_border_radius }}px;
+      transition: all 0.{{ block.settings.button_transition_duration }}s ease-out;
+    }
+
+    {% if block.settings.button_show_border == true %}
+      .text-overlay-{{ section.id }} .button {
+        border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
+      }
+      
+      .text-overlay-{{ section.id }} .button:hover {
+        border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_hover_color }};
+      }
+    {% endif %}
+
+    {% if block.settings.transparent_button == true %}
+      .text-overlay-{{ section.id }} .button {
+        background: transparent !important;
+      }
+    {% endif %}
+
+    .text-overlay-{{ section.id }} .button:hover {
+      box-shadow: var(--shadow);
+      color: {{ block.settings.button_font_hover_color }};
+      background: {{ block.settings.button_hover_color }};
+    }
+  {% endfor %}
+
+  /* BLOCKS */
+{% endstyle %}
+
+
+{% schema %}
+{
+  "name": "Image Slider",
+  "class": "banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image Slide 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image Slide 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image Slide 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image Slide 4"
+    },
+    {
+      "type": "select",
+      "id": "image_slider_banner_size",
+      "label": "Image Banner Size",
+      "options": [
+        {
+          "value": "400",
+          "label": "Small"
+        },
+        {
+          "value": "600",
+          "label": "Medium"
+        },
+        {
+          "value": "800",
+          "label": "Large"
+        },
+        {
+          "value": "900",
+          "label": "Full Height"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "image_slider_overlay_color",
+      "label": "Overlay Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "image_slider_background_color",
+      "label": "Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "range",
+      "id": "image_slider_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image Overlay Opacity",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "image_slide_indicator_border",
+      "label": "Slide Indicator Border Color",
+      "default": "#2e393d"
+    },
+    {
+      "type": "color",
+      "id": "image_slide_indicator_background",
+      "label": "Slide Indicator Background Color",
+      "default": "#2e393d"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading_text",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_title",
+          "default": "Heading Title",
+          "label": "Heading Title"
+        },
+        {
+          "type": "range",
+          "id": "heading_title_size",
+          "min": 24,
+          "max": 128,
+          "step": 2,
+          "unit": "px",
+          "label": "Heading Title Size",
+          "default": 50
+        },
+        {
+          "type": "select",
+          "id": "heading_font_weight",
+          "label": "Heading Font Weight",
+          "options": [
+            {
+              "value": "100",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "number",
+          "id": "heading_y_position",
+          "label": "Heading Y Position",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "heading_font_color",
+          "label": "Heading Font Color",
+          "default": "#000"
+        }
+      ]
+    },
+    {
+    "type": "text",
+    "name": "Heading Description",
+    "limit": 2,
+    "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading_description",
+          "default": "Heading Description",
+          "label": "Heading Description"
+        },
+        {
+          "type": "range",
+          "id": "heading_description_font_size",
+          "min": 14,
+          "max": 64,
+          "step": 1,
+          "unit": "px",
+          "label": "Font Size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "heading_description_font_weight",
+          "label": "Font Weight",
+          "options": [
+            {
+              "value": "100",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Regular"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "color",
+          "id": "heading_description_color",
+          "label": "Font Color",
+          "default": "#000"
+        }
+      ]
+    },
+    {
+      "type": "url",
+      "name": "Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Shop Now",
+          "label": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button URL"
+        },
+        {
+          "type": "color",
+          "id": "button_font_color",
+          "label": "Font Color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Background Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_font_hover_color",
+          "label": "Hover Font Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_color",
+          "label": "Hover Background Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "range",
+          "id": "button_transition_duration",
+          "min": 1,
+          "max": 99,
+          "step": 1,
+          "unit": "ms",
+          "label": "Transition Duration",
+          "default": 5
+        },
+        {
+          "type": "range",
+          "id": "button_border_radius",
+          "min": 0,
+          "max": 10,
+          "step": 1,
+          "unit": "px",
+          "label": "Border Radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "button_size",
+          "min": 5,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Size",
+          "default": 10
+        },
+        {
+          "type": "range",
+          "id": "button_font_size",
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Font Size",
+          "default": 16
+        },
+        {
+          "type": "checkbox",
+          "id": "transparent_button",
+          "label": "Transparent Button",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_show_border",
+          "label": "Show Button Border",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "button_border_thickness",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "unit": "px",
+          "label": "Border Thickness",
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button Border Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_border_hover_color",
+          "label": "Button Border Hover Color",
+          "default": "#f57224"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "banner",
+      "name": "Image Slider"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  let counter = 1;
+
+  setInterval(() => {
+    document.getElementById('radio-' + counter).checked = true;
+    counter++;
+    if (counter > 4) {
+      counter = 1;
+    }
+  }, 5000);
+</script>

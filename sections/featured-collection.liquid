@@ -1,14 +1,14 @@
 <section>
-  <div class="featured-collection-container">
+  <div class="featured-collection-container-{{ section.id }}">
     {% if section.settings.show_collection_title == true %}
       <h2 class="featured-collection-title">{{ section.settings.title }}</h2>
     {% endif %}
 
-    <div class="card-container">
+    <div class="card-container-{{ section.id }}">
       {% for product in collections[section.settings['featured--collection']].products %}
         {% assign image = product.featured_media.preview_image %}
 
-        <div class="card">
+        <div class="card-{{ section.id }}">
           <div class="card-header">
             {% if image != blank %}
               <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
@@ -16,10 +16,10 @@
               {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
             {% endif %}
 
-            <div class="card-body">
-              <h3 class="card-product-title">
+            <div class="card-body-{{ section.id }}">
+              <h3 class="card-product-title-{{ section.id }}">
                 <a href="{{ product.url }}">{{ product.title }}</a>
-              <h3 class="card-product-price">
+              <h3 class="card-product-price-{{ section.id }}">
                 <p>{{ product.price | money }}</p>
             </div>
           </div>
@@ -30,14 +30,14 @@
 </section>
 
 {% style %}
-  section .featured-collection-container {
+  section .featured-collection-container-{{ section.id }} {
     padding: 0 {{ section.settings.featured_collection_padding_x | times: 3 }}px;
     padding-bottom: {{ section.settings.featured_collection_padding_y | times: 3 }}px !important;
     background: {{ section.settings.featured_collection_background_color }};
     height: auto;
   }
 
-  section .featured-collection-title {
+  .featured-collection-container-{{ section.id }} .featured-collection-title {
     font-size: {{ section.settings.collection_title_font_size }}px;
     padding: {{ section.settings.collection_title_padding_y }}px 0;
     text-align: {{ section.settings.collection_title_position_x }};
@@ -45,14 +45,14 @@
     color: {{ section.settings.collection_title_font_color }};
   }
 
-  section .card-container {
+  section .card-container-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat({{ section.settings.collection_cards_per_row }}, 1fr);
     align-items: center;
     gap: {{ section.settings.collection_cards_gap }}px;
   }
 
-  .card-container .card {
+  .card-container-{{ section.id }} .card-{{ section.id }} {
     border-radius: {{ section.settings.collection_cards_border_radius }}px;
     overflow: hidden;
     background: {{ section.settings.collection_cards_body_color }};
@@ -60,36 +60,36 @@
 
   /* IF CARD SHADOW */
   {% if section.settings.show_collection_card_shadow == true %}
-    .card-container .card {
+    .card-container-{{ section.id }} .card-{{ section.id }} {
       box-shadow: {{ section.settings.collection_cards_shadow_position_x }}px {{ section.settings.collection_cards_shadow_position_y }}px {{ section.settings.collection_cards_shadow_spread_size}}px {{ section.settings.collection_cards_shadow_color }};
     }
   {% endif %}
 
   /* IF CARD BORDER */
   {% if section.settings.show_collection_card_border == true %}
-    .card-container .card {
+    .card-container-{{ section.id }} .card-{{ section.id }} {
       border: {{ section.settings.collection_cards_border_thickness }}px solid {{ section.settings.collection_cards_border_color }};
     }
   {% endif %}
 
-  .card img {
+  .card-{{ section.id }} img {
     aspect-ratio: 1 / 1;
     overflow: hidden;
     width: 100%;
     height: auto;
   }
 
-  .card .card-body {
+  .card-{{ section.id }} .card-body-{{ section.id }} {
     padding: {{ section.settings.collection_cards_inner_padding }}px;
     height: auto;
     overflow: hidden;
   }
 
-  .card-body h3 {
+  .card-body-{{ section.id }} h3 {
     text-align: {{ section.settings.collection_title_and_price_position }};
   }
 
-  .card-product-title a {
+  .card-product-title-{{ section.id }} a {
     color: {{ section.settings.collection_cards_product_title }};
     font-weight: {{ section.settings.collection_cards_product_font_weight }};
     font-size: {{ section.settings.collection_cards_product_title_font_size }}px;
@@ -97,18 +97,18 @@
 
   /* IF HOVER ANIMATION */
   {% if section.settings.show_card_hover_animation == true %}
-    .card-container .card:hover {
+    .card-container-{{ section.id }} .card-{{ section.id }}:hover {
       transform: scale(1.03);
       transition: .3s ease;
     }
 
-    .card-product-title a:hover {
+    .card-product-title-{{ section.id }} a:hover {
       color: {{ section.settings.collection_cards_product_title_hover }};
       transition: .3s ease;
     }
   {% endif %}
 
-  .card-product-price p {
+  .card-product-price-{{ section.id }} p {
     font-size: {{ section.settings.collection_cards_product_price_font_size }}px;
     color: {{ section.settings.collection_cards_price_title }};
     font-weight: {{ section.settings.collection_cards_price_font_weight }};

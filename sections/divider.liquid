@@ -1,0 +1,78 @@
+<section>
+  <div class="divider-container-{{ section.id }}">
+    <div class="hr"></div>
+  </div>
+</section>
+
+{% style %}
+  section .divider-container-{{ section.id }} {
+    width: 100vw;
+    padding: {{ section.settings.horizontal_divider_container_height }}px 0;
+    background: {{ section.settings.horizontal_divider_container_color }};
+  }
+
+  .divider-container-{{ section.id }} .hr {
+    width: {{ section.settings.horizontal_divider_width }}%;
+    height: 1px;
+    border: {{ section.settings.horizontal_divider_height }}px solid {{ section.settings.horizontal_divider_color }};
+    margin: 0 auto;
+
+  }
+{% endstyle %}
+
+{% schema %}
+  {
+    "name": "Horizontal Divider",
+    "class": "horizontal-divider",
+    "settings": [
+      {
+        "type": "range",
+        "id": "horizontal_divider_container_height",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Horizontal Divider Container Height",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "horizontal_divider_height",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Horizontal Divider Height",
+        "default": 1
+      },
+      {
+        "type": "range",
+        "id": "horizontal_divider_width",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "%",
+        "label": "Horizontal Divider Width",
+        "default": 50
+      },
+      {
+        "type": "color",
+        "id": "horizontal_divider_color",
+        "label": "Divider Color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "horizontal_divider_container_color",
+        "label": "Background Color",
+        "default": "#fff"
+      }
+    ],
+    "presets": [
+      {
+        "category": "divider",
+        "name": "Horizontal Divider"
+      }
+    ]
+  }
+{% endschema %}

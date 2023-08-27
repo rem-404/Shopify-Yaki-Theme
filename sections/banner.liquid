@@ -1,14 +1,14 @@
 {{ 'banner.css' | asset_url | stylesheet_tag }}
 
 <section>
-  <div class="banner-container">
+  <div class="banner-container-{{ section.id }}">
     {% if section.settings.image != blank %}
-      <div class="image-banner-container">
+      <div class="image-banner-container-{{ section.id }}">
         <div class="overlay"></div>
         <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt}}">
       </div>
     {% else %}
-      <div class="image-banner-container">
+      <div class="image-banner-container-{{ section.id }}">
         <div class="overlay"></div>
         {% capture current %}{% cycle 1,2 %}{% endcapture %}
         {% comment %} this is a placeholder image {% endcomment %}
@@ -17,7 +17,7 @@
     {% endif %}
 
     {% comment %} rendering the blocks {% endcomment %}
-    <div class="heading-text">
+    <div class="heading-text-{{ section.id }}">
       {% for block in section.blocks %}
         {% case block.type %}
           {% when 'heading' %}
@@ -33,16 +33,26 @@
 </section>
 
 {% style %}
-  section .banner-container {
-    position: relative;
-    width: 100vw;
-    height: {{ section.settings.banner_size }}px;
-    margin-bottom: {{ section.settings.banner_bottom_margin }}px;
-    overflow: hidden;
-  }
+      section .banner-container-{{ section.id }} {
+      position: relative;
+      width: 100vw;
+      height: {{ section.settings.banner_size }}px;
+      margin-bottom: {{ section.settings.banner_bottom_margin }}px;
+      overflow: hidden;
+    }
 
-  .image-banner-container img,
-  .image-banner-container svg {
+  {% if section.settings.banner_size == 900 %}
+    section .banner-container-{{ section.id }} {
+      height: 100vh;
+    }
+  {% else %}
+    section .banner-container-{{ section.id }} {
+        height: {{ section.settings.banner_size }}px;
+      }
+  {% endif %}
+
+  .image-banner-container-{{ section.id }} img,
+  .image-banner-container-{{ section.id }} svg {
     z-index: -2;
     position: absolute;
     top: 0;
@@ -52,7 +62,7 @@
     object-fit: cover;
   }
 
-  .image-banner-container .overlay {
+  .image-banner-container-{{ section.id }} .overlay {
     background: {{ section.settings.overlay_color }};
     position: absolute;
     left: 0;
@@ -64,7 +74,7 @@
   }
 
   {% for block in section.blocks %}
-    section .heading-text {
+    section .heading-text-{{ section.id }} {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,20 +84,20 @@
       z-index: 3;
     }
 
-    .heading-text .heading-title {
+    .heading-text-{{ section.id }} .heading-title {
       font-size: {{ block.settings.header_font_size }}px;
       color: {{ block.settings.header_font_color }};
       font-weight: {{ block.settings.header_font_weight }};
       transform: translateY({{ block.settings.header_y_position }}px);
     }
 
-    .heading-text .store-description {
+    .heading-text-{{ section.id }} .store-description {
       font-size: {{ block.settings.description_font_size }}px;
       color: {{ block.settings.description_font_color }};
       font-weight: {{ block.settings.description_font_weight }};
     }
 
-    .heading-text .button {
+    .heading-text-{{ section.id }} .button {
       color: {{ block.settings.button_font_color }};
       background: {{ block.settings.button_background_color }};
       padding: {{ block.settings.button_size }}px {{ block.settings.button_size | times: 3 }}px;
@@ -98,22 +108,22 @@
     }
 
     {% if block.settings.button_show_border == true %}
-      .heading-text .button {
+      .heading-text-{{ section.id }} .button {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
       }
       
-      .heading-text .button:hover {
+      .heading-text-{{ section.id }} .button:hover {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_hover_color }};
       }
     {% endif %}
 
     {% if block.settings.transparent_button == true %}
-      .heading-text .button {
+      .heading-text-{{ section.id }} .button {
         background: transparent !important;
       }
     {% endif %}
 
-    .heading-text .button:hover {
+    .heading-text-{{ section.id }} .button:hover {
       box-shadow: var(--shadow);
       color: {{ block.settings.button_font_hover_color }};
       background: {{ block.settings.button_hover_color }};
@@ -167,6 +177,10 @@
         {
           "value": "800",
           "label": "Large"
+        },
+        {
+          "value": "900",
+          "label": "Full Height"
         }
       ],
       "default": "600"
@@ -237,7 +251,7 @@
     {
       "type": "text",
       "name": "Description",
-      "limit": 1,
+      "limit": 2,
       "settings": [
         {
           "type": "inline_richtext",

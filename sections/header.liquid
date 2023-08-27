@@ -1,9 +1,9 @@
 <nav>
   <div>
-    <div class="navbar">
+    <div class="navbar-{{ section.id }}">
       <a class="store-name" href="#">{{ section.settings.store_name }}</a>
       {% comment %} nav list {% endcomment %}
-      <ul>
+      <ul class="link-{{ section.id }}">
         {% for link in linklists['main-menu'].links %}
           {% assign child_list_handle = link.title | handleize %}
           {% if linklists[child_list_handle].links != blank %}
@@ -38,7 +38,7 @@
       {% endif %}
 
       {% comment %} customer login {% endcomment %}
-      <ul>
+      <ul class="link-{{ section.id }}">
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
             <li>
@@ -66,7 +66,7 @@
     margin-bottom: {{ section.settings.navbar_bottom_margin }}px;
   }
 
-  .navbar {
+  .navbar-{{ section.id }} {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -74,28 +74,39 @@
     justify-content: space-between;
     background: {{section.settings.navbar_background_color }};
     padding: {{ section.settings.navbar_padding_y }}px {{ section.settings.navbar_padding_x }}px;
+    z-index: 99;
+
   }
 
-  .navbar .store-name {
+  /* IF POSITION FIXED */
+  {% if section.settings.navbar_fixed_position == true %}
+    .navbar-{{ section.id }} {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  {% endif %}
+
+  .navbar-{{ section.id }} .store-name {
     font-size: {{ section.settings.store_name_size }}px;
     color: {{ section.settings.store_name_color }};
     font-weight: {{ section.settings.store_name_font_weight }};
     transition: color 0.15s ease;
   }
 
-  .navbar .store-name:hover {
+  .navbar-{{ section.id }} .store-name:hover {
     color: {{ section.settings.store_name_hover_color }};
   }
 
-  ul {
+  .link-{{ section.id }} {
     display: flex;
   }
 
-  li {
+  .link-{{ section.id }} li {
     list-style: none;
   }
 
-  li a {
+  .link-{{ section.id }} li a {
     margin-right: 2rem;
     font-size: {{ section.settings.navlist_font_size }}px;
     font-weight: {{ section.settings.navlist_font_weight }};
@@ -103,11 +114,11 @@
     transition: color 0.15s ease;
   }
 
-  li a:hover {
+  .link-{{ section.id }} li a:hover {
     color: {{ section.settings.navlist_hover_color }};
   }
 
-  .navbar .search {
+  .navbar-{{ section.id }} .search {
     padding: {{ section.settings.search_bar_size }}px {{ section.settings.search_bar_size | times: 3 }}px;
     background: {{ section.settings.search_bar_background_color}};
     border-radius: {{ section.settings.search_bar_border_radius }}px;
@@ -119,7 +130,7 @@
   }
 
   {% if section.settings.search_bar_show_background == true %}
-    .navbar .search {
+    .navbar-{{ section.id }} .search {
       border: 1px solid {{ section.settings.search_bar_border_color }};
     }
   {% endif %}
@@ -131,13 +142,19 @@
   "class": "header",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "navbar_fixed_position",
+      "label": "Navbar Fixed Position",
+      "default": false
+    },
+    {
       "type": "range",
       "id": "navbar_padding_y",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Navbar Size",
+      "label": "Navbar Padding Y",
       "default": 40
     },
     {
@@ -147,7 +164,7 @@
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Navbar Side Paddings",
+      "label": "Navbar Paddings X",
       "default": 16
     },
     {

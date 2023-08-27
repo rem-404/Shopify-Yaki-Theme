@@ -1,5 +1,5 @@
 <section>
-  <div class="search-bar-container">
+  <div class="search-bar-container--{{ section.id }}">
     <form class="search" action="/search" method="GET" role="search">
       <input
         type="text"
@@ -12,7 +12,7 @@
 </section>
 
 {% style %}
-  section .search-bar-container {
+  section .search-bar-container--{{ section.id }} {
     display: flex;
     justify-content: {{ section.settings.searchbar_position }};
     background: {{ section.settings.search_bar_container_color }};
@@ -20,21 +20,21 @@
     padding-bottom: {{section.settings.search_bar_margin_bottom }}px;
   }
 
-  .search-bar-container .search {
+  .search-bar-container--{{ section.id }} .search {
     padding: {{ section.settings.search_bar_size }}px {{ section.settings.search_bar_size | times: 3 }}px;
     background: {{ section.settings.search_bar_background_color}};
     border-radius: {{ section.settings.search_bar_border_radius }}px;
     width: {{ section.settings.search_bar_width }}vw;
   }
 
-  .search input {
+  .search-bar-container--{{ section.id }} input {
     background: {{ section.settings.search_bar_background_color}};
     color: {{ section.settings.search_bar_font_color }};
     width: {{ section.settings.search_bar_width  | minus: 5 }}vw;
   }
 
   {% if section.settings.search_bar_show_border == true %}
-    .search-bar-container .search {
+    .search-bar-container--{{ section.id }} .search {
       border: 1px solid {{ section.settings.search_bar_border_color }};
     }
   {% endif %}

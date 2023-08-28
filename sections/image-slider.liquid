@@ -7,7 +7,7 @@
       <div class="text-overlay-{{ section.id }}">
         {% for block in section.blocks %}
           {% case block.type %}
-            {% when 'heading_text'%}
+            {% when 'heading'%}
               <h1>{{ block.settings.heading_title }}</h1>
             {% when 'text' %}
               <p class="description-1">{{ block.settings.heading_description }}</p>
@@ -206,6 +206,7 @@
   #radio-4:checked ~ .auto-navigation .auto-btn-4 {
     background: {{ section.settings.image_slide_indicator_background }};
   }
+
   /* IMAGE SLIDER END */
   {% for block in section.blocks %}
     .text-overlay-{{ section.id }} h1 {
@@ -214,6 +215,13 @@
       color: {{ block.settings.heading_font_color }};
       transform: translateY({{ block.settings.heading_y_position }}px);
     }
+    
+    /* IF TEXT SHADOW */
+    {% if block.settings.heading_show_text_shadow == true %}
+      .text-overlay-{{ section.id }} h1 {
+        text-shadow: {{ block.settings.heading_text_shadow_position_x }}px {{ block.settings.heading_text_shadow_position_y }}px {{ block.settings.heading_text_shadow_spread_size }}px {{ block.settings.heading_text_shadow_color }};
+      }
+    {% endif %}
 
     .text-overlay-{{ section.id }} .description-1 {
       font-size: {{ block.settings.heading_description_font_size }}px;
@@ -232,6 +240,7 @@
       transition: all 0.{{ block.settings.button_transition_duration }}s ease-out;
     }
 
+    /*  */
     {% if block.settings.button_show_border == true %}
       .text-overlay-{{ section.id }} .button {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
@@ -345,7 +354,7 @@
   ],
   "blocks": [
     {
-      "type": "heading_text",
+      "type": "heading",
       "name": "Heading",
       "limit": 1,
       "settings": [
@@ -396,6 +405,48 @@
           "id": "heading_font_color",
           "label": "Heading Font Color",
           "default": "#000"
+        },
+        {
+          "type": "checkbox",
+          "id": "heading_show_text_shadow",
+          "label": "Show Text Shadow",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "heading_text_shadow_color",
+          "label": "Heading Shadow Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_spread_size",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Spread",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_position_y",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Position Y",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_position_x",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Position X",
+          "default": 0
         }
       ]
     },
@@ -502,7 +553,7 @@
           "type": "range",
           "id": "button_border_radius",
           "min": 0,
-          "max": 10,
+          "max": 100,
           "step": 1,
           "unit": "px",
           "label": "Border Radius",

@@ -1,230 +1,182 @@
-{{ 'banner.css' | asset_url | stylesheet_tag }}
-
 <section>
-  <div class="banner-container-{{ section.id }}">
-    {% if section.settings.image != blank %}
-      <div class="image-banner-container-{{ section.id }}">
-        <div class="overlay"></div>
-        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt}}">
-      </div>
-    {% else %}
-      <div class="image-banner-container-{{ section.id }}">
-        <div class="overlay"></div>
-        {% capture current %}{% cycle 1,2 %}{% endcapture %}
-        {% comment %} this is a placeholder image {% endcomment %}
-        {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
-      </div>
-    {% endif %}
-
-    {% comment %} rendering the blocks {% endcomment %}
-    <div class="heading-text-{{ section.id }}">
-      {% for block in section.blocks %}
-        {% case block.type %}
-          {% when 'heading' %}
-            <h1 class="heading-title">{{ block.settings.title }}</h1>
-          {% when 'text' %}
-            <p class="store-description">{{ block.settings.description }}</p>
-          {% when 'url' %}
-            <a class="button" href="{{ block.settings.button_link}}">{{ block.settings.button_label }}</a>
-        {% endcase %}
-      {% endfor %}
-    </div>
+  <div class="section-container-{{ section.id }}">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'heading' %}
+          <h2>{{ block.settings.heading }}</h2>
+        {% when 'text' %}
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, odit?</p>
+        {% when 'url' %}
+          <div class="button-container">
+            <a class="button" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
+          </div>
+        {% when 'caption' %}
+          <p>Add a Tagline</p>
+      {% endcase %}
+    {% endfor %}
   </div>
 </section>
 
 {% style %}
-      section .banner-container-{{ section.id }} {
-      position: relative;
-      width: 100vw;
-      height: {{ section.settings.banner_size }}px;
-      margin-bottom: {{ section.settings.banner_bottom_margin }}px;
-      overflow: hidden;
-    }
-
-  {% if section.settings.banner_size == 900 %}
-    section .banner-container-{{ section.id }} {
-      height: 100vh;
-    }
-  {% else %}
-    section .banner-container-{{ section.id }} {
-        height: {{ section.settings.banner_size }}px;
-      }
-  {% endif %}
-
-  .image-banner-container-{{ section.id }} img,
-  .image-banner-container-{{ section.id }} svg {
-    z-index: -2;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-
-  .image-banner-container-{{ section.id }} .overlay {
-    background: {{ section.settings.overlay_color }};
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
-    z-index: -1;
+  /* SECTION */
+  section .section-container-{{ section.id }} {
+    display: flex;
+    flex-direction: column;
+    align-items: {{ section.settings.section_content_alignment }};
+    justify-content: center;
+    padding-left: {{ section.settings.section_padding_y | times: 3 }}px;
+    padding-right: {{ section.settings.section_padding_y | times: 3 }}px;
+    padding-top: {{ section.settings.section_padding_x }}px;
+    padding-bottom: {{ section.settings.section_padding_x }}px;
+    margin-bottom: {{ section.settings.section_margin_x | times: 3 }}px;
+    background: {{ section.settings.section_background_color }};
   }
 
   {% for block in section.blocks %}
-    section .heading-text-{{ section.id }} {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      z-index: 3;
-    }
-
-    .heading-text-{{ section.id }} .heading-title {
+    /* HEADING */
+    .section-container-{{ section.id }} h2 {
       font-size: {{ block.settings.heading_font_size }}px;
-      color: {{ block.settings.heading_font_color }};
       font-weight: {{ block.settings.heading_font_weight }};
-      transform: translateY({{ block.settings.heading_y_position }}px);
+      color: {{ block.settings.heading_font_color }};
     }
 
+    /* IF HEADING SHADOW */
     {% if block.settings.heading_show_text_shadow == true %}
-      .heading-text-{{ section.id }} .heading-title {
-        text-shadow: {{ block.settings.heading_text_shadow_position_x }}px {{ block.settings.heading_text_shadow_position_y }}px {{ block.settings.heading_text_shadow_spread_size }}px {{ block.settings.heading_text_shadow_color }};
+      .section-container-{{ section.id }} h2 {
+        text-shadow: {{ block.settings.heading_shadow_position_x }}px {{ block.settings.heading_shadow_position_y }}px {{ block.settings.heading_shadow_spread_size }}px {{ block.settings.heading_shadow_color}};
       }
     {% endif %}
 
-    .heading-text-{{ section.id }} .store-description {
-      font-size: {{ block.settings.description_font_size }}px;
-      color: {{ block.settings.description_font_color }};
-      font-weight: {{ block.settings.description_font_weight }};
+    /* TEXT */
+    .section-container-{{ section.id }} p {
+      font-size: {{ block.settings.text_font_size }}px;
+      font-weight: {{ block.settings.text_font_weight }};
+      color: {{ block.settings.text_font_color }};
     }
 
-    .heading-text-{{ section.id }} .button {
+    /* BUTTON URL */
+    .section-container-{{ section.id }} .button {
       color: {{ block.settings.button_font_color }};
       background: {{ block.settings.button_background_color }};
       padding: {{ block.settings.button_size }}px {{ block.settings.button_size | times: 3 }}px;
       font-size: {{ block.settings.button_font_size }}px;
-      margin: 2rem;
       border-radius: {{ block.settings.button_border_radius }}px;
       transition: all 0.{{ block.settings.button_transition_duration }}s ease-out;
     }
+    
+    .section-container-{{ section.id }} .button-container {
+      margin: 2rem 0;
+    }
 
     {% if block.settings.button_show_border == true %}
-      .heading-text-{{ section.id }} .button {
+      .section-container-{{ section.id }} .button {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
       }
       
-      .heading-text-{{ section.id }} .button:hover {
+      .section-container-{{ section.id }} .button:hover {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_hover_color }};
       }
     {% endif %}
 
     {% if block.settings.transparent_button == true %}
-      .heading-text-{{ section.id }} .button {
+      .section-container-{{ section.id }} .button {
         background: transparent !important;
       }
     {% endif %}
 
-    .heading-text-{{ section.id }} .button:hover {
+    .section-container-{{ section.id }} .button:hover {
       box-shadow: var(--shadow);
       color: {{ block.settings.button_font_hover_color }};
       background: {{ block.settings.button_hover_color }};
     }
+
+
   {% endfor %}
 {% endstyle %}
 
 {% schema %}
 {
-  "name": "Banner",
-  "class": "banner-section",
+  "name": "Rich Text",
+  "class": "section",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "image",
-      "label": "Image Banner"
-    },
-    {
-      "type": "range",
-      "id": "image_overlay_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 10,
-      "unit": "%",
-      "label": "Image Overlay Opacity",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "banner_bottom_margin",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Banner Bottom Margin",
-      "default": 0
-    },
-    {
       "type": "select",
-      "id": "banner_size",
-      "label": "Image Banner Size",
+      "id": "section_content_alignment",
+      "label": "Content Alignment",
       "options": [
         {
-          "value": "400",
-          "label": "Small"
+          "value": "flex-start",
+          "label": "Left"
         },
         {
-          "value": "600",
-          "label": "Medium"
+          "value": "center",
+          "label": "Center"
         },
         {
-          "value": "800",
-          "label": "Large"
-        },
-        {
-          "value": "900",
-          "label": "Full Height"
+          "value": "flex-end",
+          "label": "Right"
         }
       ],
-      "default": "600"
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Padding Y",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "section_padding_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Padding X",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "section_margin_x",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Bottom Margin",
+      "default": 0
     },
     {
       "type": "color",
-      "id": "overlay_color",
-      "label": "Overlay Color",
-      "default": "#000"
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "default": "#fff"
     }
   ],
   "blocks": [
     {
       "type": "heading",
       "name": "Heading",
-      "limit": 1,
+      "limit": 3,
       "settings": [
         {
-          "type": "text",
-          "id": "title",
-          "default": "Main Heading",
-          "label": "Heading Title"
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "About your store",
+          "label": "Section Heading"
         },
         {
           "type": "range",
           "id": "heading_font_size",
-          "min": 24,
-          "max": 128,
-          "step": 2,
+          "min": 0,
+          "max": 100,
+          "step": 1,
           "unit": "px",
           "label": "Heading Font Size",
-          "default": 50
-        },
-        {
-          "type": "number",
-          "id": "heading_y_position",
-          "label": "Heading Y Position",
-          "default": 0
+          "default": 24
         },
         {
           "type": "select",
@@ -260,13 +212,13 @@
         },
         {
           "type": "color",
-          "id": "heading_text_shadow_color",
+          "id": "heading_shadow_color",
           "label": "Heading Shadow Color",
           "default": "#ccc"
         },
         {
           "type": "range",
-          "id": "heading_text_shadow_spread_size",
+          "id": "heading_shadow_spread_size",
           "min": 0,
           "max": 50,
           "step": 1,
@@ -276,7 +228,7 @@
         },
         {
           "type": "range",
-          "id": "heading_text_shadow_position_y",
+          "id": "heading_shadow_position_y",
           "min": 0,
           "max": 50,
           "step": 1,
@@ -286,7 +238,7 @@
         },
         {
           "type": "range",
-          "id": "heading_text_shadow_position_x",
+          "id": "heading_shadow_position_x",
           "min": 0,
           "max": 50,
           "step": 1,
@@ -298,29 +250,29 @@
     },
     {
       "type": "text",
-      "name": "Description",
-      "limit": 2,
+      "name": "Text",
+      "limit": 3,
       "settings": [
         {
           "type": "inline_richtext",
-          "id": "description",
-          "default": "Store Description",
-          "label": "Store Description"
+          "id": "section_text",
+          "default": "Lorem ipsum dolor sit amet, consectetur adipisicing.",
+          "label": "Section Text"
         },
         {
           "type": "range",
-          "id": "description_font_size",
-          "min": 14,
-          "max": 64,
+          "id": "text_font_size",
+          "min": 0,
+          "max": 100,
           "step": 1,
           "unit": "px",
           "label": "Font Size",
-          "default": 16
+          "default": 24
         },
         {
           "type": "select",
-          "id": "description_font_weight",
-          "label": "Font Weight",
+          "id": "text_font_weight",
+          "label": "Heading Font Weight",
           "options": [
             {
               "value": "100",
@@ -335,11 +287,11 @@
               "label": "Bold"
             }
           ],
-          "default": "700"
+          "default": "400"
         },
         {
           "type": "color",
-          "id": "description_font_color",
+          "id": "text_font_color",
           "label": "Font Color",
           "default": "#000"
         }
@@ -464,8 +416,8 @@
   ],
   "presets": [
     {
-      "category": "banner",
-      "name": "Banner"
+      "category": "section",
+      "name": "Rich Text"
     }
   ]
 }

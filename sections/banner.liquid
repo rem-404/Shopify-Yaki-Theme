@@ -1,30 +1,26 @@
-{{ 'banner.css' | asset_url | stylesheet_tag }}
-
 <section>
   <div class="banner-container-{{ section.id }}">
-    {% if section.settings.image != blank %}
-      <div class="image-banner-container-{{ section.id }}">
-        <div class="overlay"></div>
-        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt}}">
+    {% if section.settings.banner_image != blank %}
+      <div class="image-container-{{ section.id }}">
+        <div class="image-overlay"></div>
+        <img src="{{ section.settings.banner_image | img_url: 'master' }}" alt="{{ section.settings.banner_image.alt }}">
       </div>
     {% else %}
-      <div class="image-banner-container-{{ section.id }}">
-        <div class="overlay"></div>
-        {% capture current %}{% cycle 1,2 %}{% endcapture %}
-        {% comment %} this is a placeholder image {% endcomment %}
-        {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+      <div class="image-container-{{ section.id }}">
+        <div class="image-overlay"></div>
+        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
       </div>
     {% endif %}
 
-    {% comment %} rendering the blocks {% endcomment %}
-    <div class="heading-text-{{ section.id }}">
+    {% comment %} Rendering the blocks {% endcomment %}
+    <div class="banner-content-{{ section.id }}">
       {% for block in section.blocks %}
         {% case block.type %}
-          {% when 'heading' %}
-            <h1 class="heading-title">{{ block.settings.title }}</h1>
-          {% when 'text' %}
-            <p class="store-description">{{ block.settings.description }}</p>
-          {% when 'url' %}
+          {% when 'banner_content_heading' %}
+            <h1 class="content-title">{{ block.settings.title }}</h1>
+          {% when 'banner_content_desc' %}
+            <p class="content-description">{{ block.settings.description }}</p>
+          {% when 'banner_content_url' %}
             <a class="button" href="{{ block.settings.button_link}}">{{ block.settings.button_label }}</a>
         {% endcase %}
       {% endfor %}
@@ -33,14 +29,16 @@
 </section>
 
 {% style %}
-      section .banner-container-{{ section.id }} {
-      position: relative;
-      width: 100vw;
-      height: {{ section.settings.banner_size }}px;
-      margin-bottom: {{ section.settings.banner_bottom_margin }}px;
-      overflow: hidden;
-    }
+  section .banner-container-{{ section.id }} {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.banner_size }}px;
+    margin-top: {{ section.settings.section_top_margin }}px;
+    margin-bottom: {{ section.settings.section_bottom_margin }}px;
+    overflow: hidden;
+  }
 
+  /* If banner size */
   {% if section.settings.banner_size == 900 %}
     section .banner-container-{{ section.id }} {
       height: 100vh;
@@ -51,18 +49,20 @@
       }
   {% endif %}
 
-  .image-banner-container-{{ section.id }} img,
-  .image-banner-container-{{ section.id }} svg {
+  /* Image and placeholder size and position */
+  .image-container-{{ section.id }} img,
+  .image-container-{{ section.id }} svg {
     z-index: -2;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: auto;
+    object-position: center;
     object-fit: cover;
   }
 
-  .image-banner-container-{{ section.id }} .overlay {
+  /* Section overlay */
+  .image-container-{{ section.id }} .image-overlay {
     background: {{ section.settings.overlay_color }};
     position: absolute;
     left: 0;
@@ -73,8 +73,14 @@
     z-index: -1;
   }
 
+  /* Section Padding */
+  section .banner-content-{{ section.id }} {
+    padding: 0 {{ section.settings.section_inner_padding }}px;
+  }
+
+  /* Rendering blocks styles */
   {% for block in section.blocks %}
-    section .heading-text-{{ section.id }} {
+    section .banner-content-{{ section.id }} {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -84,26 +90,32 @@
       z-index: 3;
     }
 
-    .heading-text-{{ section.id }} .heading-title {
+    /* Content title */
+    .banner-content-{{ section.id }} .content-title {
       font-size: {{ block.settings.heading_font_size }}px;
       color: {{ block.settings.heading_font_color }};
       font-weight: {{ block.settings.heading_font_weight }};
       transform: translateY({{ block.settings.heading_y_position }}px);
     }
 
+    /* If title shadow */
     {% if block.settings.heading_show_text_shadow == true %}
-      .heading-text-{{ section.id }} .heading-title {
+      .banner-content-{{ section.id }} .content-title {
         text-shadow: {{ block.settings.heading_text_shadow_position_x }}px {{ block.settings.heading_text_shadow_position_y }}px {{ block.settings.heading_text_shadow_spread_size }}px {{ block.settings.heading_text_shadow_color }};
       }
     {% endif %}
 
-    .heading-text-{{ section.id }} .store-description {
+    /* Content description */
+    .banner-content-{{ section.id }} .content-description {
       font-size: {{ block.settings.description_font_size }}px;
       color: {{ block.settings.description_font_color }};
       font-weight: {{ block.settings.description_font_weight }};
+      text-align: center;
+      padding: {{ block.settings.description_padding_y }}px 0;
     }
 
-    .heading-text-{{ section.id }} .button {
+    /* Content button */
+    .banner-content-{{ section.id }} .button {
       color: {{ block.settings.button_font_color }};
       background: {{ block.settings.button_background_color }};
       padding: {{ block.settings.button_size }}px {{ block.settings.button_size | times: 3 }}px;
@@ -113,27 +125,51 @@
       transition: all 0.{{ block.settings.button_transition_duration }}s ease-out;
     }
 
+    /* If button border */
     {% if block.settings.button_show_border == true %}
-      .heading-text-{{ section.id }} .button {
+      .banner-content-{{ section.id }} .button {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_color }};
       }
       
-      .heading-text-{{ section.id }} .button:hover {
+      .banner-content-{{ section.id }} .button:hover {
         border: {{ block.settings.button_border_thickness }}px solid {{ block.settings.button_border_hover_color }};
       }
     {% endif %}
 
+    /* If transparent button */
     {% if block.settings.transparent_button == true %}
-      .heading-text-{{ section.id }} .button {
+      .banner-content-{{ section.id }} .button {
         background: transparent !important;
       }
     {% endif %}
 
-    .heading-text-{{ section.id }} .button:hover {
-      box-shadow: var(--shadow);
+    .banner-content-{{ section.id }} .button:hover {
       color: {{ block.settings.button_font_hover_color }};
       background: {{ block.settings.button_hover_color }};
+
+      /* what's this? */
+      /* box-shadow: var(--shadow); */
     }
+
+    /* If button shadow */
+    {% if block.settings.button_show_shadow == true %}
+      .banner-content-{{ section.id }} .button:hover {
+        box-shadow: {{ block.settings.button_shadow_position_x }}px 
+          {{ block.settings.button_shadow_position_y }}px 
+          {{ block.settings.button_shadow_spread_size }}px 
+          {{ block.settings.button_shadow_color }};
+      }
+    {% endif %}
+
+    /* If button text shadows */
+    {% if block.settings.button_text_shadow == true %}
+      .banner-content-{{ section.id }} .button:hover {
+        text-shadow: {{ block.settings.button_text_shadow_position_x }}px 
+          {{ block.settings.button_text_shadow_position_y }}px 
+          {{ block.settings.button_text_shadow_spread_size }}px 
+          {{ block.settings.button_text_shadow_color }};
+      }
+    {% endif %}
   {% endfor %}
 {% endstyle %}
 
@@ -144,7 +180,7 @@
   "settings": [
     {
       "type": "image_picker",
-      "id": "image",
+      "id": "banner_image",
       "label": "Image Banner"
     },
     {
@@ -159,13 +195,33 @@
     },
     {
       "type": "range",
-      "id": "banner_bottom_margin",
+      "id": "section_top_margin",
       "min": 0,
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Banner Bottom Margin",
+      "label": "Section Top Margin",
       "default": 0
+    },
+    {
+      "type": "range",
+      "id": "section_bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "section_inner_padding",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Inner Padding Margin",
+      "default": 10
     },
     {
       "type": "select",
@@ -200,9 +256,8 @@
   ],
   "blocks": [
     {
-      "type": "heading",
+      "type": "banner_content_heading",
       "name": "Heading",
-      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -233,6 +288,10 @@
           "options": [
             {
               "value": "100",
+              "label": "Thin"
+            },
+            {
+              "value": "200",
               "label": "Light"
             },
             {
@@ -240,7 +299,7 @@
               "label": "Regular"
             },
             {
-              "value": "700",
+              "value": "600",
               "label": "Bold"
             }
           ],
@@ -297,9 +356,8 @@
       ]
     },
     {
-      "type": "text",
+      "type": "banner_content_desc",
       "name": "Description",
-      "limit": 2,
       "settings": [
         {
           "type": "inline_richtext",
@@ -318,12 +376,26 @@
           "default": 16
         },
         {
+          "type": "range",
+          "id": "description_padding_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px",
+          "label": "Padding Y",
+          "default": 10
+        },
+        {
           "type": "select",
           "id": "description_font_weight",
           "label": "Font Weight",
           "options": [
             {
               "value": "100",
+              "label": "Thin"
+            },
+            {
+              "value": "200",
               "label": "Light"
             },
             {
@@ -331,11 +403,11 @@
               "label": "Regular"
             },
             {
-              "value": "700",
+              "value": "600",
               "label": "Bold"
             }
           ],
-          "default": "700"
+          "default": "400"
         },
         {
           "type": "color",
@@ -346,9 +418,8 @@
       ]
     },
     {
-      "type": "url",
+      "type": "banner_content_url",
       "name": "Button",
-      "limit": 1,
       "settings": [
         {
           "type": "text",
@@ -458,15 +529,111 @@
           "id": "button_border_hover_color",
           "label": "Button Border Hover Color",
           "default": "#f57224"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_show_shadow",
+          "label": "Show Button Shadow",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "button_shadow_color",
+          "label": "Button Shadow Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "range",
+          "id": "button_shadow_spread_size",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Shadow Spread",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "button_shadow_position_y",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Shadow Position Y",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "button_shadow_position_x",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Shadow Position X",
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "button_text_shadow",
+          "label": "Show Button Text Shadow",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "button_text_shadow_color",
+          "label": "Button Text Shadow Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "range",
+          "id": "button_text_shadow_spread_size",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Text Shadow Spread",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "button_text_shadow_position_y",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Text Shadow Position Y",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "button_text_shadow_position_x",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Button Text Shadow Position X",
+          "default": 0
         }
       ]
     }
   ],
   "presets": [
     {
-      "category": "banner",
-      "name": "Banner"
+      "category": "static_banner",
+      "name": "Image Banner",
+      "blocks": [
+        {
+          "type": "banner_content_heading"
+        },
+        {
+          "type": "banner_content_desc"
+        },
+        {
+          "type": "banner_content_url"
+        }
+      ]
     }
   ]
 }
 {% endschema %}
+

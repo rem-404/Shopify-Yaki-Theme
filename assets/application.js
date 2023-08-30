@@ -2,5 +2,3 @@
 
 // test if connected
 console.log('hello fron application.js')
-
-

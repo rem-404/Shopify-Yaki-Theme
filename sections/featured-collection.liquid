@@ -1,42 +1,110 @@
-<section>
+<section class="{{ section.id }}">
   <div class="featured-collection-container-{{ section.id }}">
     {% if section.settings.show_collection_title == true %}
       <h2 class="featured-collection-title">{{ section.settings.title }}</h2>
     {% endif %}
 
     <div class="card-container-{{ section.id }}">
-      {% for product in collections[section.settings['featured--collection']].products %}
-        {% assign image = product.featured_media.preview_image %}
-
-        <div class="card-{{ section.id }}">
+      {% comment %} If no selected collection {% endcomment %}
+      {% if section.settings.featured-collection == blank %}
+        
+        {% comment %} product placeholder 1 {% endcomment %}
+        <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
           <div class="card-header">
-            {% if image != blank %}
-              <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
-            {% else %}
-              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-            {% endif %}
-
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
             <div class="card-body-{{ section.id }}">
               <h3 class="card-product-title-{{ section.id }}">
-                <a href="{{ product.url }}">{{ product.title }}</a>
+                <a href="">Product Sample</a>
               <h3 class="card-product-price-{{ section.id }}">
-                <p>{{ product.price | money }}</p>
+                <p>₱15.99</p>
             </div>
           </div>
         </div>
-      {% endfor %}
+
+        {% comment %} product placeholder 2 {% endcomment %}
+        <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
+          <div class="card-header">
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="card-body-{{ section.id }}">
+              <h3 class="card-product-title-{{ section.id }}">
+                <a href="">Product Sample</a>
+              <h3 class="card-product-price-{{ section.id }}">
+                <p>₱15.99</p>
+            </div>
+          </div>
+        </div>
+
+        {% comment %} product placeholder 3 {% endcomment %}
+        <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
+          <div class="card-header">
+            {{ 'product-3' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="card-body-{{ section.id }}">
+              <h3 class="card-product-title-{{ section.id }}">
+                <a href="">Product Sample</a>
+              <h3 class="card-product-price-{{ section.id }}">
+                <p>₱15.99</p>
+            </div>
+          </div>
+        </div>
+
+        {% comment %} product placeholder 4 {% endcomment %}
+        <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
+          <div class="card-header">
+            {{ 'product-4' | placeholder_svg_tag: 'placeholder-svg' }}
+            <div class="card-body-{{ section.id }}">
+              <h3 class="card-product-title-{{ section.id }}">
+                <a href="">Product Sample</a>
+              <h3 class="card-product-price-{{ section.id }}">
+                <p>₱15.99</p>
+            </div>
+          </div>
+        </div>
+
+      {% comment %} If collection is selected {% endcomment %}
+      {% else %}
+        {% for product in collections[section.settings['featured-collection']].products limit: section.settings.products_to_show %}
+          {% assign image = product.featured_media.preview_image %}
+
+          <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
+            <div class="card-header">
+              {% if image != blank %}
+                <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+              {% endif %}
+
+              <div class="card-body-{{ section.id }}">
+                <h3 class="card-product-title-{{ section.id }}">
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                <h3 class="card-product-price-{{ section.id }}">
+                  <p>{{ product.price | money }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+      
     </div>
   </div>
 </section>
 
 {% style %}
-  section .featured-collection-container-{{ section.id }} {
-    padding: 0 {{ section.settings.featured_collection_padding_x | times: 3 }}px;
-    padding-bottom: {{ section.settings.featured_collection_padding_y | times: 3 }}px !important;
+  /* Section */
+  .{{ section.id }} {
     background: {{ section.settings.featured_collection_background_color }};
-    height: auto;
   }
 
+  /* Section container */
+  section .featured-collection-container-{{ section.id }} {
+    padding: 0 {{ section.settings.featured_collection_padding_x | times: 3 }}px;
+    padding-top: {{ section.settings.featured_collection_padding_yt | times: 3 }}px !important;
+    padding-bottom: {{ section.settings.featured_collection_padding_yb | times: 3 }}px !important;
+    height: auto;
+    margin: 0 auto;
+    width: {{ section.settings.featured_collection_width }}vw;
+  }
+
+  /* Collection title */
   .featured-collection-container-{{ section.id }} .featured-collection-title {
     font-size: {{ section.settings.collection_title_font_size }}px;
     padding: {{ section.settings.collection_title_padding_y }}px 0;
@@ -45,6 +113,7 @@
     color: {{ section.settings.collection_title_font_color }};
   }
 
+  /* Card container */
   section .card-container-{{ section.id }} {
     display: grid;
     grid-template-columns: repeat({{ section.settings.collection_cards_per_row }}, 1fr);
@@ -52,26 +121,28 @@
     gap: {{ section.settings.collection_cards_gap }}px;
   }
 
+  /* Card */
   .card-container-{{ section.id }} .card-{{ section.id }} {
     border-radius: {{ section.settings.collection_cards_border_radius }}px;
     overflow: hidden;
     background: {{ section.settings.collection_cards_body_color }};
   }
 
-  /* IF CARD SHADOW */
+  /* If card shadow */
   {% if section.settings.show_collection_card_shadow == true %}
     .card-container-{{ section.id }} .card-{{ section.id }} {
       box-shadow: {{ section.settings.collection_cards_shadow_position_x }}px {{ section.settings.collection_cards_shadow_position_y }}px {{ section.settings.collection_cards_shadow_spread_size}}px {{ section.settings.collection_cards_shadow_color }};
     }
   {% endif %}
 
-  /* IF CARD BORDER */
+  /* If card border */
   {% if section.settings.show_collection_card_border == true %}
     .card-container-{{ section.id }} .card-{{ section.id }} {
       border: {{ section.settings.collection_cards_border_thickness }}px solid {{ section.settings.collection_cards_border_color }};
     }
   {% endif %}
 
+  /* Card image */
   .card-{{ section.id }} img {
     aspect-ratio: 1 / 1;
     overflow: hidden;
@@ -79,12 +150,14 @@
     height: auto;
   }
 
+  /* Card body */
   .card-{{ section.id }} .card-body-{{ section.id }} {
     padding: {{ section.settings.collection_cards_inner_padding }}px;
     height: auto;
     overflow: hidden;
   }
 
+  /* Product title and price */
   .card-body-{{ section.id }} h3 {
     text-align: {{ section.settings.collection_title_and_price_position }};
   }
@@ -95,7 +168,7 @@
     font-size: {{ section.settings.collection_cards_product_title_font_size }}px;
   }
 
-  /* IF HOVER ANIMATION */
+  /* If hover animation */
   {% if section.settings.show_card_hover_animation == true %}
     .card-container-{{ section.id }} .card-{{ section.id }}:hover {
       transform: scale(1.03);
@@ -122,8 +195,28 @@
   "settings": [
     {
       "type": "collection",
-      "id": "featured--collection",
+      "id": "featured-collection",
       "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "unit": "pc",
+      "label": "Maximum products to show",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "featured_collection_width",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "unit": "vw",
+      "label": "Section Width",
+      "default": 90
     },
     {
       "type": "range",
@@ -137,7 +230,17 @@
     },
     {
       "type": "range",
-      "id": "featured_collection_padding_y",
+      "id": "featured_collection_padding_yt",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Top Padding",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "featured_collection_padding_yb",
       "min": 0,
       "max": 100,
       "step": 1,
@@ -210,6 +313,10 @@
       "options": [
         {
           "value": "100",
+          "label": "Thin"
+        },
+        {
+          "value": "200",
           "label": "Light"
         },
         {
@@ -217,7 +324,7 @@
           "label": "Regular"
         },
         {
-          "value": "700",
+          "value": "600",
           "label": "Bold"
         }
       ],
@@ -243,7 +350,7 @@
       "step": 1,
       "unit": "pcs",
       "label": "Cards per Row",
-      "default": 3
+      "default": 4
     },
     {
       "type": "range",
@@ -342,6 +449,10 @@
       "options": [
         {
           "value": "100",
+          "label": "Thin"
+        },
+        {
+          "value": "200",
           "label": "Light"
         },
         {
@@ -349,7 +460,7 @@
           "label": "Regular"
         },
         {
-          "value": "700",
+          "value": "600",
           "label": "Bold"
         }
       ],
@@ -378,6 +489,10 @@
       "options": [
         {
           "value": "100",
+          "label": "Thin"
+        },
+        {
+          "value": "200",
           "label": "Light"
         },
         {
@@ -385,7 +500,7 @@
           "label": "Regular"
         },
         {
-          "value": "700",
+          "value": "600",
           "label": "Bold"
         }
       ],
@@ -405,7 +520,7 @@
       "type": "checkbox",
       "id": "show_collection_card_shadow",
       "label": "Show Cards Shadow",
-      "default": false
+      "default": true
     },
     {
       "type": "color",
@@ -442,8 +557,59 @@
       "unit": "px",
       "label": "Cards Shadow Position X",
       "default": 0
+    },
+    {
+      "type": "select",
+      "id": "animate_on_scroll",
+      "label": "Animate On Scroll",
+      "options": [
+        {
+          "value": "null",
+          "label": "None"
+        },
+        {
+          "value": "fade-up",
+          "label": "Fade Up"
+        },
+        {
+          "value": "fade-down",
+          "label": "Fade Down"
+        },
+        {
+          "value": "fade-right",
+          "label": "Fade Right"
+        },
+        {
+          "value": "fade-left",
+          "label": "Fade Left"
+        },
+        {
+          "value": "flip-left",
+          "label": "Flip Left"
+        },
+        {
+          "value": "flip-right",
+          "label": "Flip Right"
+        },
+        {
+          "value": "flip-up",
+          "label": "Flip Up"
+        },
+        {
+          "value": "flip-down",
+          "label": "Flip Down"
+        },
+        {
+          "value": "zoom-in",
+          "label": "Zoom In"
+        },
+        {
+          "value": "zoom-out",
+          "label": "Zoom Out"
+        }
+      ],
+      "default": "null"
     }
-
   ],
   "presets": [
     {

@@ -42,6 +42,7 @@
     justify-content: center;
     margin: 0 auto;
     width: {{ section.settings.section_width }}vw;
+    max-width: 1920px;
     height: {{ section.settings.section_size }}px;
     overflow: hidden;
 
@@ -94,8 +95,8 @@
     justify-content: center;
     flex-direction: column;
     width: 50%;
-    padding: 20px;
     height: 100%;
+    padding: 20px;
 
     background: {{ section.settings.text_background_color }};
   }
@@ -123,6 +124,7 @@
       color: {{ block.settings.description_font_color }};
       font-weight: {{ block.settings.description_font_weight }};
       padding: {{ block.settings.description_padding_y }}px 0;
+
       /* text-align: center; */
       /* line-height: 2; */
     }
@@ -269,17 +271,17 @@
           "label": "Right"
         }
       ],
-      "default": "center"
+      "default": "flex-start"
     },
     {
       "type": "range",
       "id": "section_width",
-      "min": 50,
+      "min": 30,
       "max": 100,
       "step": 1,
       "unit": "vw",
       "label": "Section Width",
-      "default": 90
+      "default": 60
     },
     {
       "type": "range",
@@ -301,7 +303,7 @@
       "type": "color",
       "id": "image_background_color",
       "label": "Image Background Color",
-      "default": "#fff"
+      "default": "#f5f5f5"
     },
     {
       "type": "color",

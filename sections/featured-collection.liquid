@@ -102,6 +102,7 @@
     height: auto;
     margin: 0 auto;
     width: {{ section.settings.featured_collection_width }}vw;
+    max-width: 1920px;
   }
 
   /* Collection title */
@@ -139,6 +140,13 @@
   {% if section.settings.show_collection_card_border == true %}
     .card-container-{{ section.id }} .card-{{ section.id }} {
       border: {{ section.settings.collection_cards_border_thickness }}px solid {{ section.settings.collection_cards_border_color }};
+    }
+  {% endif %}
+
+  /* card header */
+  {% if section.settings.featured-collection == blank %}
+    .card-{{ section.id }} .card-header {
+      background: #f5f5f5;
     }
   {% endif %}
 
@@ -211,12 +219,12 @@
     {
       "type": "range",
       "id": "featured_collection_width",
-      "min": 50,
+      "min": 30,
       "max": 100,
       "step": 1,
       "unit": "vw",
       "label": "Section Width",
-      "default": 90
+      "default": 60
     },
     {
       "type": "range",

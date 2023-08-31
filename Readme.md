@@ -1,3 +1,12 @@
 Shopify Yaki Theme
 
-Base on dedut theme, with mostly customizable ui
+Theme from sratch with mostly customizable ui.
+
+Todos:
+  Add sections,
+  Customize the pages,
+  Implement mobile responsive,
+
+
+Note:   This is a development theme not meant for production.
+        For testing purposes only

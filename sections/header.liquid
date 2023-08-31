@@ -1,7 +1,14 @@
 <nav>
   <div>
     <div class="navbar-{{ section.id }}">
-      <a class="store-name" href="#">{{ section.settings.store_name }}</a>
+      <div class="logo-container">
+        {% if section.settings.logo != blank %}
+          <img src="{{ section.settings.logo | img_url: 'medium' }}" alt="">
+        {% endif %}
+        {% if section.settings.store_name != blank %}
+          <a class="store-name" href="#">{{ section.settings.store_name }}</a>
+        {% endif %}
+      </div>
       {% comment %} nav list {% endcomment %}
       <ul class="link-{{ section.id }}">
         {% for link in linklists['main-menu'].links %}
@@ -87,11 +94,26 @@
     }
   {% endif %}
 
+  /* LOGO CONTAINER */
+  .navbar-{{ section.id }} .logo-container {
+    display: flex;
+    flex-direction: {{ section.settings.logo_position }};
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* LOGO */
+  .navbar-{{ section.id }} img {
+    width: {{ section.settings.logo_size }}px;
+  }
+
+  /* STORE NAME */
   .navbar-{{ section.id }} .store-name {
     font-size: {{ section.settings.store_name_size }}px;
     color: {{ section.settings.store_name_color }};
     font-weight: {{ section.settings.store_name_font_weight }};
     transition: color 0.15s ease;
+    padding: 10px;
   }
 
   .navbar-{{ section.id }} .store-name:hover {
@@ -146,6 +168,45 @@
       "id": "navbar_fixed_position",
       "label": "Navbar Fixed Position",
       "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "select",
+      "id": "logo_position",
+      "label": "Logo Position",
+      "options": [
+        {
+          "value": "column",
+          "label": "Logo Top / Store Name Bottom"
+        },
+        {
+          "value": "row",
+          "label": "Logo Left / Store Name Right"
+        },
+        {
+          "value": "column-reverse",
+          "label": "Store Name Top / Logo Bottom"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Store Name Left / Logo Right"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "min": 10,
+      "max": 110,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Size",
+      "default": 50
     },
     {
       "type": "range",

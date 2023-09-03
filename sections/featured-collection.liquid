@@ -1,5 +1,6 @@
 <section class="{{ section.id }}">
   <div class="featured-collection-container-{{ section.id }}">
+    {% comment %} if show collection title {% endcomment %}
     {% if section.settings.show_collection_title == true %}
       <h2 class="featured-collection-title">{{ section.settings.title }}</h2>
     {% endif %}
@@ -15,7 +16,7 @@
             <div class="card-body-{{ section.id }}">
               <h3 class="card-product-title-{{ section.id }}">
                 <a href="">Product Sample</a>
-              <h3 class="card-product-price-{{ section.id }}">
+              </h3>
                 <p>₱15.99</p>
             </div>
           </div>
@@ -28,7 +29,7 @@
             <div class="card-body-{{ section.id }}">
               <h3 class="card-product-title-{{ section.id }}">
                 <a href="">Product Sample</a>
-              <h3 class="card-product-price-{{ section.id }}">
+              </h3>
                 <p>₱15.99</p>
             </div>
           </div>
@@ -41,7 +42,7 @@
             <div class="card-body-{{ section.id }}">
               <h3 class="card-product-title-{{ section.id }}">
                 <a href="">Product Sample</a>
-              <h3 class="card-product-price-{{ section.id }}">
+              </h3>
                 <p>₱15.99</p>
             </div>
           </div>
@@ -54,7 +55,7 @@
             <div class="card-body-{{ section.id }}">
               <h3 class="card-product-title-{{ section.id }}">
                 <a href="">Product Sample</a>
-              <h3 class="card-product-price-{{ section.id }}">
+              </h3>
                 <p>₱15.99</p>
             </div>
           </div>
@@ -76,7 +77,7 @@
               <div class="card-body-{{ section.id }}">
                 <h3 class="card-product-title-{{ section.id }}">
                   <a href="{{ product.url }}">{{ product.title }}</a>
-                <h3 class="card-product-price-{{ section.id }}">
+                </h3>
                   <p>{{ product.price | money }}</p>
               </div>
             </div>
@@ -166,7 +167,8 @@
   }
 
   /* Product title and price */
-  .card-body-{{ section.id }} h3 {
+  .card-body-{{ section.id }} h3,
+  .card-body-{{ section.id }} p {
     text-align: {{ section.settings.collection_title_and_price_position }};
   }
 
@@ -189,7 +191,7 @@
     }
   {% endif %}
 
-  .card-product-price-{{ section.id }} p {
+  .card-body-{{ section.id }} p {
     font-size: {{ section.settings.collection_cards_product_price_font_size }}px;
     color: {{ section.settings.collection_cards_price_title }};
     font-weight: {{ section.settings.collection_cards_price_font_weight }};
@@ -208,16 +210,6 @@
     },
     {
       "type": "range",
-      "id": "products_to_show",
-      "min": 2,
-      "max": 24,
-      "step": 1,
-      "unit": "pc",
-      "label": "Maximum products to show",
-      "default": 4
-    },
-    {
-      "type": "range",
       "id": "featured_collection_width",
       "min": 30,
       "max": 100,
@@ -225,6 +217,16 @@
       "unit": "vw",
       "label": "Section Width",
       "default": 60
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "unit": "pc",
+      "label": "Maximum products to show",
+      "default": 4
     },
     {
       "type": "range",
@@ -414,6 +416,48 @@
     },
     {
       "type": "checkbox",
+      "id": "show_collection_card_shadow",
+      "label": "Show Cards Shadow",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "collection_cards_shadow_color",
+      "label": "Cards Shadow Color",
+      "default": "#ccc"
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_spread_size",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Spread",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_position_y",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Position Y",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "collection_cards_shadow_position_x",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Cards Shadow Position X",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
       "id": "show_card_hover_animation",
       "label": "Show Hover Animation",
       "default": true
@@ -523,48 +567,6 @@
       "unit": "px",
       "label": "Product Price Font Size",
       "default": 16
-    },
-    {
-      "type": "checkbox",
-      "id": "show_collection_card_shadow",
-      "label": "Show Cards Shadow",
-      "default": true
-    },
-    {
-      "type": "color",
-      "id": "collection_cards_shadow_color",
-      "label": "Cards Shadow Color",
-      "default": "#ccc"
-    },
-    {
-      "type": "range",
-      "id": "collection_cards_shadow_spread_size",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Cards Shadow Spread",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "collection_cards_shadow_position_y",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Cards Shadow Position Y",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "collection_cards_shadow_position_x",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Cards Shadow Position X",
-      "default": 0
     },
     {
       "type": "select",

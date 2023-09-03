@@ -1,6 +1,7 @@
 <nav>
-  <div>
+  <div class="nav-container-{{ section.id }}">
     <div class="navbar-{{ section.id }}">
+      {% comment %} logo {% endcomment %}
       <div class="logo-container">
         {% if section.settings.logo != blank %}
           <img src="{{ section.settings.logo | img_url: 'medium' }}" alt="">
@@ -71,8 +72,9 @@
 {% style %}
   nav {
     margin-bottom: {{ section.settings.navbar_bottom_margin }}px;
+    max-width: 1920px;
   }
-
+  
   .navbar-{{ section.id }} {
     width: 100%;
     display: flex;
@@ -82,7 +84,6 @@
     background: {{section.settings.navbar_background_color }};
     padding: {{ section.settings.navbar_padding_y }}px {{ section.settings.navbar_padding_x }}px;
     z-index: 99;
-
   }
 
   /* IF POSITION FIXED */
@@ -164,6 +165,16 @@
   "class": "header",
   "settings": [
     {
+      "type": "range",
+      "id": "section_width",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "vw",
+      "label": "Section Width",
+      "default": 60
+    },
+    {
       "type": "checkbox",
       "id": "navbar_fixed_position",
       "label": "Navbar Fixed Position",
@@ -225,7 +236,7 @@
       "max": 100,
       "step": 2,
       "unit": "px",
-      "label": "Navbar Paddings X",
+      "label": "Navbar Padding X",
       "default": 16
     },
     {

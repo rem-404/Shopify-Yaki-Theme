@@ -4,21 +4,20 @@
     {% for block in section.blocks %}
       {% case block.type %}
         {% when 'text'%}
-          {% if block.type == 'text' %}
-            <div class="grid-text-{{ section.id }}">
-              {% if block.settings.logo != blnak %}
-                <img src="{{ block.settings.logo | img_url: 'medium' }}" alt="">
-              {% endif %}
-              <h4>{{ block.settings.title }}</h4>
-              <p>{{ block.settings.description }}</p>
-            </div>
-          {% elsif block.type == 'image' %}
+          <div class="grid-text-{{ section.id }}">
+            {% if block.settings.logo != blank %}
+              <img src="{{ block.settings.logo | img_url: 'medium' }}" alt="">
+            {% endif %}
+            <h4>{{ block.settings.title }}</h4>
+            <p>{{ block.settings.description }}</p>
+          </div>
+        {% when 'image' %}
+          {% if block.settings.image_picker != blank %}
             <div class="grid-image-{{ section.id }}">
               <img src="{{ block.settings.image_picker | img_url: "large" }}" alt="">
             </div>
           {% endif %}
       {% endcase %}
-      {% comment %} if block type {% endcomment %}
     {% endfor %}
   </div>
 </footer>
@@ -87,6 +86,10 @@
           text-align: center;
         }
     {% endif %}
+
+    .grid-image-{{ section.id }} img {
+      width: {{ block.settings.image_image_size }}px;
+    }
   {% endfor %}
 {% endstyle %}
 
@@ -290,11 +293,22 @@
       {
         "type": "image",
         "name": "Image",
+        "limit": 1,
         "settings": [
           {
             "type": "image_picker",
             "id": "image_picker",
             "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "image_image_size",
+            "min": 10,
+            "max": 110,
+            "step": 1,
+            "unit": "px",
+            "label": "Image Size",
+            "default": 50
           }
         ]
       }

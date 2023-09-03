@@ -1,17 +1,27 @@
+hello from product.liquid
+
 {% assign current_product = product.selected_or_first_available_variant %}
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
 
-<div class="container">
-  <div class="row">
+<div>
+  <div class="page-container-{{ section.id }}">
 
-    <div class="col-md-6 col-12">
-      <img class="img_fluid" src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}" id="product-image">
-      {% for image in product.images %}
-        <img src="{{ product_image.images | img_url: 'medium' }}" alt="{{ img.alt }}">
-      {% endfor %}
+    <div class="image-container">
+      {% comment %} <img src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"> {% endcomment %}
+
+      {% comment %} image carousel {% endcomment %}
+      <div class="carousel" data-carousel>
+        <button class="carousel-btn prev" data-carousel-button="prev">&#10096;</button>
+        <button class="carousel-btn next" data-carousel-button="next">&#10097;</button>
+        <ul data-slides>
+          {% for image in product.images %}
+            <li class="slide"><img src="{{ image.src | product_img_url: 'large' }}" alt="{{ img.alt }}"></li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
-    <div class="col-md-6 col-12">
+    <div class="content-container">
       <h1>{{ product.title }}</h1>
       <p>{{ current_product.price | money }}</p>
       {% form 'product', product, class:"product--form", id:"add-to-car-form" %}
@@ -29,10 +39,14 @@
             {% endfor %}
           </select>
         </div>
-        <div class="mb-3">
+        <div>
           <input type="number" class="form--control" name="quantity" id="quantity" value="1" min="1">
         </div>
         <button type="submit" name="add" id="add-to-cart" class="btn btn-secondary btn-lg w-100 rounded-0">Add to cart</button>
+
+        <div class="description">
+          <p>{{ product.description }}</p>
+        </div>
 
         {% if section.settings.dynamic-button-checkbox == true %}
           {{ form | payment_button }}
@@ -42,6 +56,88 @@
     </div>
   </div>
 </div>
+
+
+{% style %}
+  .page-container-{{ section.id }} {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+  }
+
+  .page-container-{{ section.id }} .image-container {
+    display: grid;
+    border: 1px solid red;
+    background: orange;
+    width: 50%;
+  }
+
+  .page-container-{{ section.id }} .content-container {
+    border: 1px solid black;
+    background: dodgerblue;
+    width: 50%;
+  }
+
+  /* carousel */
+  .page-container-{{ section.id }} .image-container .carousel {
+    width: 100%;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  /* .slide > img {
+    display: block;
+    width: 100%;
+    height: 50vh;
+    object-fit: cover;
+    object-position: center;
+  } */
+
+  .active {
+    opacity: 1;
+  }
+
+  .carousel-btn {
+    position: absolute;
+    background: none;
+    border: none;
+    font-size: 40px;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255,255,255,.5); 
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: rgba(0,0,0,.1);
+
+  }
+
+  .carousel-btn:hover,
+  .carousel-btn:focus {
+    color: #fff;
+    background-color: rgba(0,0,0,.2);
+  }
+
+  .carousel-btn:focus {
+    outline: 1px solid #000;
+  }
+
+  .carousel-btn.prev {
+    left: 10px;
+  }
+
+  .carousel-btn.next {
+    right: 10px;
+  }
+{% endstyle %}
 
 
 {% schema %}
@@ -59,13 +155,28 @@
 {% endschema %}
 
 
+<script>
+  const list = document.querySelectorAll('.slide');
+  let listArr = Array.from(list);
+  listArr[0].classList.add('active');
 
-{% style %}
-  .form--control {
-    width: 100%;
-  }
+  console.log(`list: ${list}`);
+  console.log(listArr);
 
-  .form--select {
-    width: 100%;
-  }
-{% endstyle %}
+  const buttons = document.querySelectorAll('[data-carousel-button]');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const offset = button.dataset.carouselButton === 'next' ? 1 : -1;
+      const slides = button.closest('[data-carousel]').querySelector('[data-slides]');
+
+      const activeSlide = slides.querySelector('.active');
+      let newIndex = [...slides.children].indexOf(activeSlide) + offset;
+      if (newIndex < 0) newIndex = slides.children.length - 1;
+      if (newIndex >= slides.children.length) newIndex = 0;
+
+      activeSlide.classList.remove('active'); 
+      slides.children[newIndex].classList.add('active');
+    });
+  });
+</script>

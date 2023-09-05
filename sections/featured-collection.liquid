@@ -97,7 +97,6 @@
 
   /* Section container */
   section .featured-collection-container-{{ section.id }} {
-    padding: 0 {{ section.settings.featured_collection_padding_x | times: 3 }}px;
     padding-top: {{ section.settings.featured_collection_padding_yt | times: 3 }}px !important;
     padding-bottom: {{ section.settings.featured_collection_padding_yb | times: 3 }}px !important;
     height: auto;
@@ -196,7 +195,43 @@
     color: {{ section.settings.collection_cards_price_title }};
     font-weight: {{ section.settings.collection_cards_price_font_weight }};
   }
+
+  /* BREAKPOINTS */
+  @media screen and (max-width: 1260px) {
+    .featured-collection-container-{{ section.id }} {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    section .card-container-{{ section.id }} {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    section .card-container-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    section .card-container-{{ section.id }} {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    
+    .card-{{ section.id }} {
+      width: 100%;
+    }
+  }
 {% endstyle %}
+
 
 {% schema %}
 {
@@ -227,16 +262,6 @@
       "unit": "pc",
       "label": "Maximum products to show",
       "default": 4
-    },
-    {
-      "type": "range",
-      "id": "featured_collection_padding_x",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Section Padding X",
-      "default": 0
     },
     {
       "type": "range",

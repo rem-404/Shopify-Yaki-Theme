@@ -21,11 +21,7 @@
                   <p class="small"> Variant: {{ item.variant.title }}</p>
                   <p>{{ item.price | money }}</p>
                 </div>
-  
-                <div class="grid-item-3 grid-item">
-  
-                </div>
-  
+
                 <div class="grid-item-4 grid-item">
                   <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" class="qty" >
                 </div>
@@ -198,10 +194,10 @@
     display: grid;
     /* grid-gap: 8px; */
     padding-bottom: 8px;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: minmax(100px, auto);
     grid-template-areas: 
-    "picture details price qty total remove";
+    "picture details qty total remove";
   }
 
   /* common grid items */
@@ -226,9 +222,6 @@
   .grid-item-2 {
     grid-area: details;
   }
-  .grid-item-3 {
-    grid-area: price;
-  }
   .grid-item-4 {
     grid-area: qty;
   }
@@ -239,5 +232,54 @@
     grid-area: remove;
   }
 
+  /* BREAKPOINTS */
+  @media screen and (max-width: 1260px) {
+    .shopping-cart {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .grid-container-{{ section.id }} {
+      width: 100%;
+      padding-bottom: 8px;
+      grid-template-columns: auto 30% auto auto auto;
+      grid-auto-rows: minmax(100px, auto);
+      grid-template-areas: 
+      "picture details qty total remove";
+    }
+
+    .grid-item img {
+      width: 100px;
+    }
+
+    .{{ section.id }} input {
+      width: 70px;
+    }
+  }
+
+  @media screen and (max-width: 470px) {
+    .grid-item img {
+      width: 70px;
+    }
+
+    .{{ section.id }} p,
+    .grid-item .product-title,
+    .grid-item {
+      font-size: 14px;
+    }
+  }
+
+  @media screen and (max-width: 320px) {
+    .{{ section.id }} input {
+      display: none;
+    }
+
+    .{{ section.id }} p,
+    .grid-item .product-title,
+    .grid-item {
+      font-size: 12px;
+    }
+  }
 
 {% endstyle %}

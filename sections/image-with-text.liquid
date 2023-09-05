@@ -45,7 +45,6 @@
     max-width: 1920px;
     height: {{ section.settings.section_size }}px;
     overflow: hidden;
-
     /* Image placement */
     flex-direction: {{ section.settings.desktop_image_placement}};
   }
@@ -201,6 +200,33 @@
       }
     {% endif %}
   {% endfor %}
+
+  /* BREAKPOINTS */
+  @media screen and (max-width: 1260px) {
+    .section-container {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .{{ section.id }} .section-container {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+    }
+
+    section .image-container-{{ section.id }},
+    section .text-container-{{ section.id }} {
+      width: 70%;
+      }
+  }
+
+  @media screen and (max-width: 600px) {
+    section .image-container-{{ section.id }},
+    section .text-container-{{ section.id }} {
+      width: 100%;
+      }
+  }
 {% endstyle %}
 
 {% schema %}

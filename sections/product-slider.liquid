@@ -203,11 +203,37 @@
     font-size: {{ section.settings.price_font_size }}px;
   }
 
-  @media screen and (max-width: 900px) {
+    /* BREAKPOINTS */
+
+  @media screen and (max-width: 1260px) {
+    .wrapper {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .wrapper .carousel {
+      grid-auto-columns: calc((100% / 3) - 6px);
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .wrapper .carousel {
+      grid-auto-columns: calc((100% / 2) - 3px);
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .wrapper .carousel {
+      grid-auto-columns: calc(100%);
+    }
+  }
+
+  /* @media screen and (max-width: 900px) {
     .wrapper .carousel {
       grid-auto-columns: calc((100% / 2) - 9px);
     }
-  }
+  } */
 
   @media screen and (max-width: 600px) {
     .wrapper- .carousel {

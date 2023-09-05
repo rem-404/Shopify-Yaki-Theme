@@ -1,5 +1,5 @@
 {% for error in form.errors %}
-  <div class="alert alert-danger">
+  <div class="error">
     {% if error == 'form' %}
       {{ form.errors.messages[error] }}
     {% else %}
@@ -7,3 +7,14 @@
     {% endif %}
   </div>
 {% endfor %}
+
+
+
+{% style %}
+  .errors li,
+  .error {
+    font-size: 12px;
+    color: red;
+    list-style: none;
+  }
+{% endstyle %}

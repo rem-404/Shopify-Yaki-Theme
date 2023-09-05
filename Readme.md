@@ -10,3 +10,6 @@ Todos:
 
 Note:   This is a development theme not meant for production.
         For testing purposes only
+        All sections are inpendent.
+
+        note note: no mobile responsive yet..

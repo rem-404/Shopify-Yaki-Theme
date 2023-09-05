@@ -214,6 +214,100 @@
       "label": "Image"
     },
     {
+      "type": "range",
+      "id": "section_width",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "vw",
+      "label": "Section Width",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Section Padding Y",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Image Size",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_shadow_spread_size",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Shadow Spread",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_shadow_position_y",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Shadow Position Y",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_shadow_position_x",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Shadow Position X",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "section_background_color",
+      "label": "Section Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "image_background_color",
+      "label": "Image Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "text_background_color",
+      "label": "Text Background Color",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "image_shadow_color",
+      "label": "Image Shadow Color",
+      "default": "#ccc"
+    },
+    {
       "type": "select",
       "id": "desktop_image_placement",
       "label": "Desktop Image Placement",
@@ -274,44 +368,6 @@
       "default": "flex-start"
     },
     {
-      "type": "range",
-      "id": "section_width",
-      "min": 30,
-      "max": 100,
-      "step": 1,
-      "unit": "vw",
-      "label": "Section Width",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "section_padding_y",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Section Padding Y",
-      "default": 20
-    },
-    {
-      "type": "color",
-      "id": "section_background_color",
-      "label": "Section Background Color",
-      "default": "#fff"
-    },
-    {
-      "type": "color",
-      "id": "image_background_color",
-      "label": "Image Background Color",
-      "default": "#f5f5f5"
-    },
-    {
-      "type": "color",
-      "id": "text_background_color",
-      "label": "Text Background Color",
-      "default": "#fff"
-    },
-    {
       "type": "select",
       "id": "image_fit_by",
       "label": "Image Fit By",
@@ -328,66 +384,10 @@
       "default": "width"
     },
     {
-      "type": "range",
-      "id": "image_size",
-      "min": 50,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "Image Size",
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "image_border_radius",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "Image Border Radius",
-      "default": 0
-    },
-    {
       "type": "checkbox",
       "id": "show_image_shadow",
       "label": "Show Image Shadow",
       "default": false
-    },
-    {
-      "type": "color",
-      "id": "image_shadow_color",
-      "label": "Image Shadow Color",
-      "default": "#ccc"
-    },
-    {
-      "type": "range",
-      "id": "image_shadow_spread_size",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Image Shadow Spread",
-      "default": 8
-    },
-    {
-      "type": "range",
-      "id": "image_shadow_position_y",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Image Shadow Position Y",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "image_shadow_position_x",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Image Shadow Position X",
-      "default": 0
     }
   ],
   "blocks": [
@@ -410,6 +410,48 @@
           "unit": "px",
           "label": "Heading Font Size",
           "default": 30
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_spread_size",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Spread",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_position_y",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Position Y",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "heading_text_shadow_position_x",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Heading Shadow Position X",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "heading_font_color",
+          "label": "Heading Font Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "heading_text_shadow_color",
+          "label": "Heading Shadow Color",
+          "default": "#ccc"
         },
         {
           "type": "number",
@@ -442,52 +484,10 @@
           "default": "400"
         },
         {
-          "type": "color",
-          "id": "heading_font_color",
-          "label": "Heading Font Color",
-          "default": "#000"
-        },
-        {
           "type": "checkbox",
           "id": "heading_show_text_shadow",
           "label": "Show Text Shadow",
           "default": false
-        },
-        {
-          "type": "color",
-          "id": "heading_text_shadow_color",
-          "label": "Heading Shadow Color",
-          "default": "#ccc"
-        },
-        {
-          "type": "range",
-          "id": "heading_text_shadow_spread_size",
-          "min": 0,
-          "max": 50,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Shadow Spread",
-          "default": 8
-        },
-        {
-          "type": "range",
-          "id": "heading_text_shadow_position_y",
-          "min": 0,
-          "max": 50,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Shadow Position Y",
-          "default": 0
-        },
-        {
-          "type": "range",
-          "id": "heading_text_shadow_position_x",
-          "min": 0,
-          "max": 50,
-          "step": 1,
-          "unit": "px",
-          "label": "Heading Shadow Position X",
-          "default": 0
         }
       ]
     },
@@ -522,6 +522,12 @@
           "default": 0
         },
         {
+          "type": "color",
+          "id": "description_font_color",
+          "label": "Font Color",
+          "default": "#000"
+        },
+        {
           "type": "select",
           "id": "description_font_weight",
           "label": "Font Weight",
@@ -544,12 +550,6 @@
             }
           ],
           "default": "400"
-        },
-        {
-          "type": "color",
-          "id": "description_font_color",
-          "label": "Font Color",
-          "default": "#000"
         }
       ]
     },
@@ -557,41 +557,6 @@
       "type": "text_content_url",
       "name": "Button",
       "settings": [
-        {
-          "type": "text",
-          "id": "button_label",
-          "default": "Shop Now",
-          "label": "Button"
-        },
-        {
-          "type": "url",
-          "id": "button_link",
-          "label": "Button URL"
-        },
-        {
-          "type": "color",
-          "id": "button_font_color",
-          "label": "Font Color",
-          "default": "#fff"
-        },
-        {
-          "type": "color",
-          "id": "button_background_color",
-          "label": "Background Color",
-          "default": "#000"
-        },
-        {
-          "type": "color",
-          "id": "button_font_hover_color",
-          "label": "Hover Font Color",
-          "default": "#000"
-        },
-        {
-          "type": "color",
-          "id": "button_hover_color",
-          "label": "Hover Background Color",
-          "default": "#ccc"
-        },
         {
           "type": "range",
           "id": "button_transition_duration",
@@ -633,18 +598,6 @@
           "default": 16
         },
         {
-          "type": "checkbox",
-          "id": "transparent_button",
-          "label": "Transparent Button",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "button_show_border",
-          "label": "Show Button Border",
-          "default": false
-        },
-        {
           "type": "range",
           "id": "button_border_thickness",
           "min": 1,
@@ -653,30 +606,6 @@
           "unit": "px",
           "label": "Border Thickness",
           "default": 1
-        },
-        {
-          "type": "color",
-          "id": "button_border_color",
-          "label": "Button Border Color",
-          "default": "#000"
-        },
-        {
-          "type": "color",
-          "id": "button_border_hover_color",
-          "label": "Button Border Hover Color",
-          "default": "#f57224"
-        },
-        {
-          "type": "checkbox",
-          "id": "button_show_shadow",
-          "label": "Show Button Shadow",
-          "default": false
-        },
-        {
-          "type": "color",
-          "id": "button_shadow_color",
-          "label": "Button Shadow Color",
-          "default": "#ccc"
         },
         {
           "type": "range",
@@ -709,18 +638,6 @@
           "default": 0
         },
         {
-          "type": "checkbox",
-          "id": "button_text_shadow",
-          "label": "Show Button Text Shadow",
-          "default": false
-        },
-        {
-          "type": "color",
-          "id": "button_text_shadow_color",
-          "label": "Button Text Shadow Color",
-          "default": "#ccc"
-        },
-        {
           "type": "range",
           "id": "button_text_shadow_spread_size",
           "min": 0,
@@ -749,6 +666,89 @@
           "unit": "px",
           "label": "Button Text Shadow Position X",
           "default": 0
+        },
+        {
+          "type": "color",
+          "id": "button_font_color",
+          "label": "Font Color",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Background Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_font_hover_color",
+          "label": "Hover Font Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_hover_color",
+          "label": "Hover Background Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button Border Color",
+          "default": "#000"
+        },
+        {
+          "type": "color",
+          "id": "button_border_hover_color",
+          "label": "Button Border Hover Color",
+          "default": "#f57224"
+        },
+        {
+          "type": "color",
+          "id": "button_shadow_color",
+          "label": "Button Shadow Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "color",
+          "id": "button_text_shadow_color",
+          "label": "Button Text Shadow Color",
+          "default": "#ccc"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Shop Now",
+          "label": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "transparent_button",
+          "label": "Transparent Button",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_show_border",
+          "label": "Show Button Border",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_show_shadow",
+          "label": "Show Button Shadow",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "button_text_shadow",
+          "label": "Show Button Text Shadow",
+          "default": false
         }
       ]
     }

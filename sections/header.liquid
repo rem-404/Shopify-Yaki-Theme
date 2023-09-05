@@ -32,23 +32,21 @@
           {% endif %}
         {% endfor %}
 
-        <li><a href="/cart" class="new-cart">Cart</a></li>
+        
+
       </ul>
 
       {% comment %} search {% endcomment %}
-      {% if section.settings.show_search_bar == true %}
-        <form class="search" action="/search" method="GET" role="search">
-          <input
-            type="text"
-            name="q"
-            value="{{ search.terms | escape }}"
-            placeholder="{{ section.settings.search_placeholder }}"
-          >
+        <form class="search-form" action="/search" method="GET" role="search">
+          <input type="text" name="q" value="{{ search.terms | escape }}" id="search-box" placeholder="search">
+          <button type='submit' class='bx bx-search-alt-2'></button>
+          {% comment %} <label for="search-box" class='bx bx-search-alt-2'></label> {% endcomment %}
         </form>
-      {% endif %}
 
       {% comment %} customer login {% endcomment %}
       <ul class="link-{{ section.id }}">
+        
+
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
             <li>
@@ -59,11 +57,18 @@
             </li>
           {% else %}
             <li>
-              <a href="{{ routes.account_login_url }}">Login</a>
+              {% comment %} search (placeholder) {% endcomment %}
+              <a href="#"><i class='bx bx-search-alt-2 icon' id='search_btn' ></i></a>
             </li>
             <li>
-              <a href="{{ routes.account_register_url }}">Register</a>
+              <a href="{{ routes.account_login_url }}"><i class='bx bxs-user icon' ></i></a>
             </li>
+          {% endif %}
+
+          {% if cart.item_count > 0 %}
+            <li><a href="/cart" class="new-cart"><i class='bx bxs-cart-alt icon' ></i></a></li>
+          {% else %}
+            <li><a href="/cart" class="new-cart"><i class='bx bx-cart-alt icon'></i></a></li>
           {% endif %}
         {% endif %}
       </ul>
@@ -75,27 +80,34 @@
   nav {
     margin-bottom: {{ section.settings.navbar_bottom_margin }}px;
     max-width: 1920px;
+    background: {{section.settings.navbar_background_color }};
+    width: 100%;
+    z-index: 999;
+    /* position: fixed; */
+    /* overflow: hidden; */
+    transition: all .15s ease-in-out;
   }
   
   .navbar-{{ section.id }} {
-    width: 100%;
+    width: {{ section.settings.section_width }}vw;
+    margin: 0 auto;
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: {{section.settings.navbar_background_color }};
     padding: {{ section.settings.navbar_padding_y }}px {{ section.settings.navbar_padding_x }}px;
-    z-index: 99;
   }
 
   /* IF POSITION FIXED */
   {% if section.settings.navbar_fixed_position == true %}
-    .navbar-{{ section.id }} {
+    .sticky {
       position: fixed;
-      top: 0;
-      left: 0;
+      background: {{ section.settings.sticky_nav_color }};
+      opacity: {{ section.settings.sticky_nav_opacity | divided_by: 100.0 }};
     }
   {% endif %}
+
 
   /* LOGO CONTAINER */
   .navbar-{{ section.id }} .logo-container {
@@ -143,27 +155,54 @@
     color: {{ section.settings.navlist_hover_color }};
   }
 
-  .navbar-{{ section.id }} .search {
-    padding: {{ section.settings.search_bar_size }}px {{ section.settings.search_bar_size | times: 3 }}px;
-    background: {{ section.settings.search_bar_background_color}};
-    border-radius: {{ section.settings.search_bar_border_radius }}px;
+  /* search */
+  .navbar-{{ section.id }} .search-form {
+    position: absolute;
+    /* border: 1px solid #ccc; */
+    top: 110%;
+    right: 20px;
+    opacity: 0;
+    width: 300px;
+    height: 35px;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 8px #ccc;
+    transition: opacity .15s ease-in-out;
   }
 
-  .search input {
-    background: {{ section.settings.search_bar_background_color}};
-    color: {{ section.settings.search_bar_font_color}};
+  .search-form input {
+    width: 100%;
+    height: 100%;
+    color: #2e393d;
   }
 
-  {% if section.settings.search_bar_show_background == true %}
-    .navbar-{{ section.id }} .search {
-      border: 1px solid {{ section.settings.search_bar_border_color }};
-    }
-  {% endif %}
+  .search-form button {
+    font-size: {{ section.settings.icon_size }}px;
+    cursor: pointer;
+    color: #ccc;
+    background: #fff;
+    transition: color .15s ease-in-out;
+  }
 
+  .search-form button:hover {
+    color: #2e393d;
+  }
+
+  .search-active {
+    opacity: 1 !important;
+  }
 
   /* cart experiment */
   .new-cart {
     position: relative;
+  }
+  
+  .icon {
+    font-size: {{ section.settings.icon_size }}px;
   }
 
   {% if cart.item_count > 0 %}
@@ -172,7 +211,7 @@
     position: absolute;
     bottom: -5px;
     /* right: -21px; */
-    background: #000;
+    background: {{ section.settings.navlist_font_color }};
     font-size: 10px;
     font-weight: 600;
     color: #fff;
@@ -192,6 +231,11 @@
   "class": "header",
   "settings": [
     {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
       "type": "range",
       "id": "section_width",
       "min": 30,
@@ -202,15 +246,126 @@
       "default": 60
     },
     {
-      "type": "checkbox",
-      "id": "navbar_fixed_position",
-      "label": "Navbar Fixed Position",
-      "default": false
+      "type": "range",
+      "id": "logo_size",
+      "min": 10,
+      "max": 110,
+      "step": 1,
+      "unit": "px",
+      "label": "Logo Size",
+      "default": 50
     },
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
+      "type": "range",
+      "id": "navbar_padding_y",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Padding Y",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "navbar_padding_x",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Padding X",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "navbar_bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Navbar Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "store_name_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Store Name Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "navlist_font_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 8,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "sticky_nav_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Sticky Navbar Opacity",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "navbar_background_color",
+      "label": "Navbar Background",
+      "default": "#fff"
+    },
+    {
+      "type": "color",
+      "id": "store_name_color",
+      "label": "Store Name Font Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "store_name_hover_color",
+      "label": "Store Name Hover Color",
+      "default": "#f57224"
+    },
+    {
+      "type": "color",
+      "id": "navlist_font_color",
+      "label": "Menu Font Color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "navlist_hover_color",
+      "label": "Menu Hover Color",
+      "default": "#f57224"
+    },
+    {
+      "type": "color",
+      "id": "sticky_nav_color",
+      "label": "Sticky Navbar Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "text",
+      "id": "store_name",
+      "default": "Store name",
+      "label": "Store Name"
     },
     {
       "type": "select",
@@ -237,58 +392,6 @@
       "default": "row"
     },
     {
-      "type": "range",
-      "id": "logo_size",
-      "min": 10,
-      "max": 110,
-      "step": 1,
-      "unit": "px",
-      "label": "Logo Size",
-      "default": 50
-    },
-    {
-      "type": "range",
-      "id": "navbar_padding_y",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Navbar Padding Y",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "navbar_padding_x",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Navbar Padding X",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "navbar_bottom_margin",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Navbar Bottom Margin",
-      "default": 0
-    },
-    {
-      "type": "color",
-      "id": "navbar_background_color",
-      "label": "Navbar Background",
-      "default": "#fff"
-    },
-    {
-      "type": "text",
-      "id": "store_name",
-      "default": "Store name",
-      "label": "Store Name"
-    },
-    {
       "type": "select",
       "id": "store_name_font_weight",
       "label": "Store Name Font Weight",
@@ -307,50 +410,6 @@
         }
       ],
       "default": "400"
-    },
-    {
-      "type": "range",
-      "id": "store_name_size",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Store Name Font Size",
-      "default": 16
-    },
-    {
-      "type": "color",
-      "id": "store_name_color",
-      "label": "Store Name Font Color",
-      "default": "#000"
-    },
-    {
-      "type": "color",
-      "id": "store_name_hover_color",
-      "label": "Store Name Hover Color",
-      "default": "#f57224"
-    },
-    {
-      "type": "range",
-      "id": "navlist_font_size",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Menu Font Size",
-      "default": 16
-    },
-    {
-      "type": "color",
-      "id": "navlist_font_color",
-      "label": "Menu Font Color",
-      "default": "#000"
-    },
-    {
-      "type": "color",
-      "id": "navlist_hover_color",
-      "label": "Menu Hover Color",
-      "default": "#f57224"
     },
     {
       "type": "select",
@@ -373,61 +432,27 @@
       "default": "400"
     },
     {
-      "type": "text",
-      "id": "search_placeholder",
-      "default": "Search",
-      "label": "Search Bar Placeholder"
-    },
-    {
-      "type": "color",
-      "id": "search_bar_font_color",
-      "label": "Search Bar Font Color",
-      "default": "#000"
-    },
-    {
-      "type": "color",
-      "id": "search_bar_border_color",
-      "label": "Search Bar Border Color",
-      "default": "#ccc"
-    },
-    {
-      "type": "color",
-      "id": "search_bar_background_color",
-      "label": "Search Bar Background Color",
-      "default": "#fff"
-    },
-    {
       "type": "checkbox",
-      "id": "show_search_bar",
-      "label": "Show Search Bar",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "search_bar_show_background",
-      "label": "Show Search Bar Border",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "search_bar_size",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Search Bar Size",
-      "default": 6
-    },
-    {
-      "type": "range",
-      "id": "search_bar_border_radius",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "label": "Search Bar Border-Radius",
-      "default": 0
+      "id": "navbar_fixed_position",
+      "label": "Navbar Fixed Position",
+      "default": false
     }
   ]
 }
 {% endschema %}
+
+
+<script>
+  window.addEventListener('scroll', function(){
+    let nav = document.querySelector('nav');
+    nav.classList.toggle('sticky', window.scrollY > 0);
+  })
+
+
+  const searchForm = document.querySelector('.search-form');
+
+  document.querySelector('#search_btn').onclick = () => {
+    searchForm.classList.toggle('search-active');
+    console.log('ewan');
+  }
+</script>

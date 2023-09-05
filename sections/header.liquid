@@ -10,8 +10,9 @@
           <a class="store-name" href="#">{{ section.settings.store_name }}</a>
         {% endif %}
       </div>
+      
       {% comment %} nav list {% endcomment %}
-      <ul class="link-{{ section.id }}">
+      <ul class="link-{{ section.id }} menu-items">
         {% for link in linklists['main-menu'].links %}
           {% assign child_list_handle = link.title | handleize %}
           {% if linklists[child_list_handle].links != blank %}
@@ -30,10 +31,7 @@
               <a href="{{ link.url }}">{{ link.title }}</a>
             </li>
           {% endif %}
-        {% endfor %}
-
-        
-
+        {% endfor %}     
       </ul>
 
       {% comment %} search {% endcomment %}
@@ -44,9 +42,7 @@
         </form>
 
       {% comment %} customer login {% endcomment %}
-      <ul class="link-{{ section.id }}">
-        
-
+      <ul class="link-{{ section.id }} user-icons">
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
             <li>
@@ -58,7 +54,7 @@
           {% else %}
             <li>
               {% comment %} search (placeholder) {% endcomment %}
-              <a href="#"><i class='bx bx-search-alt-2 icon' id='search_btn' ></i></a>
+              <a><i class='bx bx-search-alt-2 icon' id='search_btn' ></i></a>
             </li>
             <li>
               <a href="{{ routes.account_login_url }}"><i class='bx bxs-user icon' ></i></a>
@@ -70,8 +66,14 @@
           {% else %}
             <li><a href="/cart" class="new-cart"><i class='bx bx-cart-alt icon'></i></a></li>
           {% endif %}
+
+            {% comment %} box menu {% endcomment %}
+            <li>
+              <i class='bx bx-menu'></i>
+            </li>
         {% endif %}
       </ul>
+
     </div>
   </div>
 </nav>
@@ -79,16 +81,20 @@
 {% style %}
   nav {
     margin-bottom: {{ section.settings.navbar_bottom_margin }}px;
-    max-width: 1920px;
-    background: {{section.settings.navbar_background_color }};
+    background: {{ section.settings.navbar_background_color }};
     width: 100%;
+    height: {{ section.settings.section_height}}px;
     z-index: 999;
-    /* position: fixed; */
-    /* overflow: hidden; */
     transition: all .15s ease-in-out;
+    /* max-width: 1920px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
   }
   
   .navbar-{{ section.id }} {
+
     width: {{ section.settings.section_width }}vw;
     margin: 0 auto;
     position: relative;
@@ -96,7 +102,6 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: {{ section.settings.navbar_padding_y }}px {{ section.settings.navbar_padding_x }}px;
   }
 
   /* IF POSITION FIXED */
@@ -158,20 +163,24 @@
   /* search */
   .navbar-{{ section.id }} .search-form {
     position: absolute;
-    /* border: 1px solid #ccc; */
-    top: 110%;
-    right: 20px;
-    opacity: 0;
+    top: 130%;
+    right: 0;
     width: 300px;
     height: 35px;
     background: #fff;
     border-radius: 5px;
     padding: 10px;
     overflow: hidden;
-    display: flex;
+    display: none;
     align-items: center;
     box-shadow: 0 0 8px #ccc;
-    transition: opacity .15s ease-in-out;
+    /* transform: translateX(900px); */
+    transition: all .25s ease-in-out;
+  }
+
+  .search-active {
+    /* transform: translateX(0) !important; */
+    display: flex !important;
   }
 
   .search-form input {
@@ -192,10 +201,6 @@
     color: #2e393d;
   }
 
-  .search-active {
-    opacity: 1 !important;
-  }
-
   /* cart experiment */
   .new-cart {
     position: relative;
@@ -203,6 +208,8 @@
   
   .icon {
     font-size: {{ section.settings.icon_size }}px;
+    cursor: pointer;
+
   }
 
   {% if cart.item_count > 0 %}
@@ -221,8 +228,50 @@
     border-radius: 3px;
   }
   {% endif %}
-
   /* end cart experiment */
+
+  .bx-menu {
+    font-size: {{ section.settings.icon_size }}px;
+    color: {{ section.settings.navlist_font_color }};
+    cursor: pointer;
+    display: none;
+  }
+
+  /* BREAKPOINTS */
+
+  @media screen and (max-width: 1260px) {
+    .navbar-{{ section.id }} {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .menu-items {
+      position: absolute;
+      justify-content: space-around;
+      top: {{ section.settings.section_height}}px;
+      right: 0;
+      padding: 0 20px;
+      flex-direction: column;
+      background: {{ section.settings.navbar_background_color }};
+      border-radius: 5px;
+      display: none;
+    }
+
+    .menu-items li {
+      padding: 10px 0;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .bx-menu {
+      display: block;
+    }
+  }
+
+
 {% endstyle %}
 
 {% schema %}
@@ -247,6 +296,16 @@
     },
     {
       "type": "range",
+      "id": "section_height",
+      "min": 30,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Navbar Height",
+      "default": 60
+    },
+    {
+      "type": "range",
       "id": "logo_size",
       "min": 10,
       "max": 110,
@@ -254,26 +313,6 @@
       "unit": "px",
       "label": "Logo Size",
       "default": 50
-    },
-    {
-      "type": "range",
-      "id": "navbar_padding_y",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Navbar Padding Y",
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "navbar_padding_x",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "label": "Navbar Padding X",
-      "default": 0
     },
     {
       "type": "range",
@@ -443,16 +482,25 @@
 
 
 <script>
+  {% comment %} stiky navbar {% endcomment %}
   window.addEventListener('scroll', function(){
     let nav = document.querySelector('nav');
     nav.classList.toggle('sticky', window.scrollY > 0);
   })
 
 
+  {% comment %} search toggle {% endcomment %}
   const searchForm = document.querySelector('.search-form');
-
   document.querySelector('#search_btn').onclick = () => {
     searchForm.classList.toggle('search-active');
-    console.log('ewan');
+  }
+
+
+  {% comment %} menu toggle {% endcomment %}
+  const menuIcon = document.querySelector('.bx-menu')
+  const menuItems = document.querySelector('.menu-items');
+  menuIcon.onclick = () => {
+    menuIcon.classList.toggle('bx-x')
+    menuItems.classList.toggle('active');
   }
 </script>

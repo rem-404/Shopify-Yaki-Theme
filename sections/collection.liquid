@@ -66,6 +66,7 @@
     display: flex;
     max-width: 1920px;
     background: {{ section.settings.collection_background }};
+    margin: 0 auto;
   }
 
   .collection-container .paginate {
@@ -194,6 +195,33 @@
     color: {{ section.settings.product_price_color }};
     font-size: {{ section.settings.collection_cards_product_price_font_size }}px;
     font-weight: {{ section.settings.collection_cards_price_font_weight }};
+  }
+
+
+  /* BREAKPOINTS */
+
+  @media screen and (max-width: 1260px) {
+    .{{ section.id }} .collection-container {
+      min-width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-page-content-{{ section.id }} {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .main-page-content-{{ section.id }} {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
   }
 
 {% endstyle %}

@@ -45,8 +45,6 @@
     width: {{ section.settings.footer_width }}vw;
   }
 
-
-
   /* Redering block styles */
   {% for block in section.blocks %}
     .grid-text-{{ section.id }} {
@@ -91,6 +89,13 @@
       width: {{ block.settings.image_image_size }}px;
     }
   {% endfor %}
+
+  /* BREAKPOINTS */
+  @media screen and (max-width: 1260px) {
+    .{{ section.id }} .footer-container {
+      min-width: 90vw;
+    }
+  }
 {% endstyle %}
 
 

@@ -38,6 +38,15 @@
       border: 1px solid {{ section.settings.search_bar_border_color }};
     }
   {% endif %}
+
+
+  /* BREAKPOINTS */
+
+  @media screen and (max-width: 1260px) {
+    .search-bar-container--{{ section.id }} .search {
+      min-width: 90vw;
+    }
+  }
 {% endstyle %}
 
 {% schema %}
@@ -51,9 +60,9 @@
       "min": 20,
       "max": 100,
       "step": 1,
-      "unit": "%",
+      "unit": "vw",
       "label": "Search Bar Width",
-      "default": 20
+      "default": 60
     },
     {
       "type": "range",

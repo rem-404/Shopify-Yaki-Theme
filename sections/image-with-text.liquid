@@ -76,6 +76,7 @@
     .image-container-{{ section.id }} img,
     .image-container-{{ section.id }} svg {
       height: {{ section.settings.image_size }}%;
+      max-height: {{ section.settings.section_size }}px;
     }
   {% endif %}
 

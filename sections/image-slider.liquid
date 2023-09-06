@@ -330,6 +330,36 @@
   {% endfor %}
 
   /* BLOCKS */
+
+
+  @media screen and (max-width: 768px) {
+    .text-overlay-{{ section.id }} h1 {
+      font-size: 96px;
+    }
+
+    .text-overlay-{{ section.id }} .description-1 {
+      font-size: 40px;
+      text-align: center;
+    }
+
+    .text-overlay-{{ section.id }} .button {
+      font-size: 16px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .text-overlay-{{ section.id }} h1 {
+      font-size: 48px;
+    }
+
+    .text-overlay-{{ section.id }} .description-1 {
+      font-size: 24px;
+    }
+
+    .text-overlay-{{ section.id }} .button {
+      font-size: 12px;
+    }
+  }
 {% endstyle %}
 
 

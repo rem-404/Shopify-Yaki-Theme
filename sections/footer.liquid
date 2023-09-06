@@ -29,7 +29,8 @@
   .{{ section.id }} {
     width: 100%;
     height: auto;
-    padding: {{ section.settings.footer_padding_y }}px 0;
+    /* padding: {{ section.settings.footer_padding_y }}px 0; */
+    height: {{ section.settings.section_height }}px;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -131,13 +132,13 @@
       },
       {
         "type": "range",
-        "id": "footer_padding_y",
-        "min": 0,
-        "max": 100,
+        "id": "section_height",
+        "min": 100,
+        "max": 200,
         "step": 1,
         "unit": "px",
-        "label": "Footer Padding Y",
-        "default": 30
+        "label": "Footer Height",
+        "default": 100
       },
       {
         "type": "range",

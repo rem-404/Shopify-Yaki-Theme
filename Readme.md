@@ -1,15 +1,14 @@
 Shopify Yaki Theme
 
-Theme from sratch with mostly customizable ui.
+Sectioned theme from sratch with customizable ui from colors, sizes, and positions.
+All sections are independent.
+Mobile responsive breakpoints: (1260 for vw), 768, 600, 400, 320
 
 Todos:
-  Add sections,
+  Add more sections,
   Customize the pages,
-  Implement mobile responsive,
 
 
 Note:   This is a development theme not meant for production.
         For testing purposes only
         All sections are inpendent.
-
-        note note: no mobile responsive yet..

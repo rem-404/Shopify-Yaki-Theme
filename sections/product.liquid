@@ -22,6 +22,7 @@
     <div class="content-container">
       <h2>{{ product.title }}</h2>
       <p class="product-price">{{ current_product.price | money }}</p>
+
       {% form 'product', product, class:"product--form", id:"add-to-car-form" %}
         <div class="form-select-container">
           <select name="id" id="product-select" class="form-select">
@@ -38,24 +39,38 @@
           </select>
         </div>
 
-        <div class="form-input-container">
-          <input type="number" class="form-input" name="quantity" id="quantity" value="1" min="1">
-        </div>
+        {% if product.available %}
+          <div class="form-input-container">
+            <input type="number" class="form-input" name="quantity" id="quantity" value="1" min="1">
+          </div>
+  
+          <div class="btn-container">
+            <button type="submit" name="add" id="add-to-cart" class="add-to-cart">Add to cart</button>
+  
+            {% if section.settings.dynamic-button-checkbox == true %}
+              {{ form | payment_button }}
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="form-input-container">
+            <input type="number" class="form-input" name="quantity" id="quantity" value="1" min="1" disabled>
+          </div>
 
-        <div class="btn-container">
-          <button type="submit" name="add" id="add-to-cart" class="add-to-cart">Add to cart</button>
+          <div class="btn-container">
+            <button type="submit" name="add" id="add-to-cart" class="add-to-cart" disabled>Out of stock</button>
 
-          {% if section.settings.dynamic-button-checkbox == true %}
-            {{ form | payment_button }}
-          {% endif %}
-        </div>
+            {% if section.settings.dynamic-button-checkbox == true %}
+              {{ form | payment_button }}
+            {% endif %}
+
+          </div>
+        {% endif %}
+
+        
 
         <div class="product-description">
           <p>{{ product.description }}</p>
         </div>
-
-        
-
       {% endform %}
     </div>
   </div>
@@ -131,7 +146,7 @@
     color: #000;
   }
 
-  .content-container .add-to-cart {
+  /* .content-container .add-to-cart {
     font-size: {{ section.settings.button_font_size }}px;
     color: {{ section.settings.button_font_color }};
     font-weight: {{ section.settings.button_font_weight }};
@@ -143,7 +158,30 @@
   .content-container .add-to-cart:hover {
     color: {{ section.settings.button_hover_font_color }};
     background: {{ section.settings.button_hover_background_color }};
-  }
+  } */
+
+  {% if product.available %}
+    .content-container .add-to-cart {
+      font-size: {{ section.settings.button_font_size }}px;
+      color: {{ section.settings.button_font_color }};
+      font-weight: {{ section.settings.button_font_weight }};
+      background: {{ section.settings.button_background_color }};
+      cursor: pointer;
+      transition: all .15s ease-in-out;
+    }
+
+    .content-container .add-to-cart:hover {
+      color: {{ section.settings.button_hover_font_color }};
+      background: {{ section.settings.button_hover_background_color }};
+    }
+  {% else %}
+    .content-container .add-to-cart {
+      background: #b3b3b3;
+    }
+
+  {% endif %}
+
+  
 
   /* carousel start ----------------------------------------------*/
   .page-container-{{ section.id }} .image-container .carousel {

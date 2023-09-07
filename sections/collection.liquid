@@ -34,19 +34,23 @@
         {% for product in collection.products %}
           {% assign image = product.featured_media.preview_image %}
           <div class="card-{{ section.id }}" data-aos="{{ section.settings.animate_on_scroll }}">
-            <div class="card-header-{{ section.id }}">
-              {% if image != blank %}
-                <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
-              {% else %}
-                {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-              {% endif %}
-              <div class="card-body-{{ section.id }}">
-                <h3 class="card-product-title-{{ section.id }}">
-                  <a href="{{ product.url }}">{{ product.title }}</a>
-                </h3>
-                <p>{{ product.price | money }}</p>
+
+            <a href="{{ product.url }}">
+              <div class="card-header-{{ section.id }}">
+                {% if image != blank %}
+                  <img src="{{ image | img_url: 'large' }}" alt="{{ product.title }}">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                {% endif %}
+                <div class="card-body-{{ section.id }}">
+                  <h3 class="card-product-title-{{ section.id }}">
+                    <a href="{{ product.url }}" class="hover-underline">{{ product.title }}</a>
+                  </h3>
+                  <p>{{ product.price | money }}</p>
+                </div>
               </div>
-            </div>
+            </a>
+
           </div>
         {% else %}
           <p>no matches</p>
@@ -197,9 +201,32 @@
     font-weight: {{ section.settings.collection_cards_price_font_weight }};
   }
 
+  /* HOVER UNDERLINE */
+  {% if section.settings.hover_underline %}
+  .hover-underline {
+    display: inline-block;
+    position: relative;
+  }
+  .hover-underline:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scale(0);
+    height: 1px;
+    bottom: 0px;
+    left: 0;
+    background-color: {{ section.settings.collection_cards_product_title_hover }};
+    transform-origin: bottom right;
+    transition: transform .15s ease-out;
+  }
+  .hover-underline:hover:after {
+    transform: scale(1);
+    transform-origin: bottom left;
+  }
+  {% endif %}
+
 
   /* BREAKPOINTS */
-
   @media screen and (max-width: 1260px) {
     .{{ section.id }} .collection-container {
       min-width: 90vw;
@@ -607,6 +634,12 @@
           }
         ],
         "default": "null"
+      },
+      {
+        "type": "checkbox",
+        "id": "hover_underline",
+        "label": "Hover Underline",
+        "default": true
       }
     ]
   }

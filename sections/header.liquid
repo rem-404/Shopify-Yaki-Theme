@@ -28,7 +28,7 @@
             ]
           {% else %}
             <li>
-              <a href="{{ link.url }}">{{ link.title }}</a>
+              <a href="{{ link.url }}" class="hover-underline-{{ section.id }}"> {{ link.title }}</a>
             </li>
           {% endif %}
         {% endfor %}     
@@ -147,6 +147,7 @@
     list-style: none;
   }
 
+  /* nav links */
   .link-{{ section.id }} li a {
     margin-right: 2rem;
     font-size: {{ section.settings.navlist_font_size }}px;
@@ -237,8 +238,31 @@
     display: none;
   }
 
-  /* BREAKPOINTS */
+  /* HOVER UNDERLINE */
+  {% if section.settings.hover_underline %}
+    .hover-underline-{{ section.id }} {
+      display: inline-block;
+      position: relative;
+    }
+    .hover-underline-{{ section.id }}:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      transform: scale(0);
+      height: 1px;
+      bottom: -3px;
+      left: 0;
+      background-color: {{ section.settings.navlist_hover_color }};
+      transform-origin: bottom right;
+      transition: transform .15s ease-out;
+    }
+    .hover-underline-{{ section.id }}:hover:after {
+      transform: scale(1);
+      transform-origin: bottom left;
+    }
+  {% endif %}
 
+  /* BREAKPOINTS */
   @media screen and (max-width: 1260px) {
     .navbar-{{ section.id }} {
       min-width: 90vw;
@@ -476,6 +500,12 @@
       "id": "navbar_fixed_position",
       "label": "Navbar Fixed Position",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "hover_underline",
+      "label": "Hover Underline",
+      "default": true
     }
   ]
 }

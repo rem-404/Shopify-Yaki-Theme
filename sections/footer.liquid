@@ -35,6 +35,9 @@
     flex-direction: row;
     justify-content: space-evenly;
     background: {{ section.settings.footer_background }};
+
+    /* position: fixed; */
+    /* bottom: 0; */
   }
   
   .{{ section.id }} .footer-container {
@@ -89,6 +92,14 @@
     .grid-image-{{ section.id }} img {
       width: {{ block.settings.image_image_size }}px;
     }
+
+    {% if section.settings.fixed_footer %}
+      .fixed-footer {
+        position: fixed;
+        bottom: 0;
+      }
+    {% endif %}
+
   {% endfor %}
 
   /* BREAKPOINTS */
@@ -149,6 +160,12 @@
         "unit": "px",
         "label": "Column Gap",
         "default": 10
+      },
+      {
+        "type": "checkbox",
+        "id": "fixed_footer",
+        "label": "Fixed footer if body < height",
+        "default": true
       }
     ],
     "max_blocks": 4,
@@ -219,19 +236,15 @@
                 "label": "Thin"
               },
               {
-                "value": "200",
-                "label": "Light"
-              },
-              {
                 "value": "400",
                 "label": "Regular"
               },
               {
-                "value": "600",
+                "value": "500",
                 "label": "Bold"
               }
             ],
-            "default": "600"
+            "default": "500"
           },
           {
             "type": "range",
@@ -264,15 +277,11 @@
                 "label": "Thin"
               },
               {
-                "value": "200",
-                "label": "Light"
-              },
-              {
                 "value": "400",
                 "label": "Regular"
               },
               {
-                "value": "600",
+                "value": "500",
                 "label": "Bold"
               }
             ],
@@ -321,3 +330,16 @@
     ]
   }
 {% endschema %}
+
+
+
+<script>
+  {% comment %} console.log('Hello from footer'); {% endcomment %}
+  {% comment %} console.log(`Height = ${windowHeight}`); {% endcomment %}
+  
+  const windowHeight = document.body.scrollHeight;
+  const footer = document.querySelector('footer');
+  if (windowHeight < 1000) {
+    footer.classList.add('fixed-footer');
+  }
+</script>

@@ -90,13 +90,14 @@
     display: flex;
     flex-direction: row;
     width: {{ section.settings.section_width}}vw;
-    min-height: 50vh;
+    /* min-height: 100vh; */
     margin: 0 auto;
   }
 
   /* image container */
   .page-container-{{ section.id }} .image-container {
     width: 50%;
+    max-height: 50vh;
   }
 
   /* content container */
@@ -252,6 +253,9 @@
     right: 10px;
   }
   /* carousel end */
+
+  
+  /* BREAKPOINTS */
 
   @media screen and (max-width: 1260px) {
     .page-container-{{ section.id }} {
@@ -423,15 +427,11 @@
             "label": "Thin"
           },
           {
-            "value": "200",
-            "label": "Light"
-          },
-          {
             "value": "400",
             "label": "Regular"
           },
           {
-            "value": "600",
+            "value": "500",
             "label": "Bold"
           }
         ],
@@ -447,15 +447,11 @@
             "label": "Thin"
           },
           {
-            "value": "200",
-            "label": "Light"
-          },
-          {
             "value": "400",
             "label": "Regular"
           },
           {
-            "value": "600",
+            "value": "500",
             "label": "Bold"
           }
         ],
@@ -471,15 +467,11 @@
             "label": "Thin"
           },
           {
-            "value": "200",
-            "label": "Light"
-          },
-          {
             "value": "400",
             "label": "Regular"
           },
           {
-            "value": "600",
+            "value": "500",
             "label": "Bold"
           }
         ],
@@ -495,15 +487,11 @@
             "label": "Thin"
           },
           {
-            "value": "200",
-            "label": "Light"
-          },
-          {
             "value": "400",
             "label": "Regular"
           },
           {
-            "value": "600",
+            "value": "500",
             "label": "Bold"
           }
         ],

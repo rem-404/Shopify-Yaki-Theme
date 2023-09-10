@@ -1,39 +1,33 @@
 <!-- /templates/customers/account.liquid -->
 
-<div class="container my-5">
-  <div class="row">
+<div class="account-page">
+  <div class="section-container">
     
     {% comment %} Address {% endcomment %}
-    <div class="col-12 col-md-4 my">
-      <h2 class="mb-3">Account</h2>
-      {% if customer.default_address %}
-        <p>{{ customer.default_address.address1 }}</p>
-        {% if customer.default_address.address2 != "" %}
-          <p>{{ customer.default_address.address2 }}</p>
-        {% endif %}
-        <p>{{ customer.default_address.city}}, {% if address.province_code %}{{ customer.default_address.province_code }}, {% endif %}{{ customer.default_address.country }}</p>
-        <p>{{ customer.default_address.zip }}</p>
-        <p>{{ customer.default_address.phone }}</p>
+    <div class="user-account-column">
+      <h2>Account</h2>
 
-      {% endif %}
-      <a href="{{ routes.account_addresses_url }}" class="btn btn-light">View address
-      <span class="badge bg-success">{{ customer.addresses_count }}</span>
-      </a>
+      {{ customer.default_address | format_address }}
+
+      <a href="{{ routes.account_addresses_url }}" class="button">Address Book</a>
+      
+      <a href="{{ routes.account_logout_url }}" class="button">Logout</a>
+
     </div>
 
     {% comment %} orders {% endcomment %}
-    <div class="col-12 col-md-8">
-      <div id="customer_orders">
-        <h2>Orders</h2>
+    <div class="user-order-column">
+      <div>
+        <h2>Order History</h2>
         {% paginate customer.orders by 10 %}
         {% if customer.orders.size != 0 %}
-          <table class="table table-bordered">
+          <table>
             <thead>
               <tr>
-                <th>Order number</th>
+                <th>Order #</th>
                 <th>Order Status</th>
                 <th>Payment Status</th>
-                <th>Order date</th>
+                <th>Order Date</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -41,9 +35,9 @@
               {% for order in customer.orders %}
                 <tr>
                   <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
-                  <td><span class="badge bg-primary">{{ order.fulfillment_status_label }}</span></td>
-                  <td><span class="badge bg-success">{{ order.financial_status_label }}</span></td>
-                  <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.created_at | time_tag: format: 'abbreviated_date' }}</td>
                   <td>{{ order.total_price | money }}</td>
                 </tr>
               {% endfor %}
@@ -63,7 +57,97 @@
 
 
 {% style %}
-  .my p {
-    margin: 0;
+  .account-page {
+    width: 100%;
+    padding: 30px 0;
+    /* min-height: calc(100vh - 183px); */
   }
+
+  .account-page .section-container {
+    width: 60vw;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .user-account-column {
+    width: 30%;
+  }
+
+  .account-page h2 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+
+  .account-page table {
+    width: 100%;
+    min-width: 422px;
+    border-collapse: collapse;
+  }
+
+  .account-page .button {
+    background: #353a3d;
+    color: #fff;
+    padding: 16px;
+    display: block;
+    width: 200px;
+    text-align: center;
+    margin-top: 16px;
+    transition: all .15s ease-in-out;
+  }
+
+  .account-page .button:hover {
+    background: #000;
+    transform: scale(1.01);
+  }
+
+  .account-page th, 
+  .account-page td {
+    text-align: left;
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .account-page th {
+    font-size: 16px;
+    font-weight: 400;
+    padding: 5px 0;
+  }
+  
+  .user-order-column {
+    width: 70%;
+  }
+  
+
+  /* BREAKPOINTS */
+
+  @media screen and (max-width: 1260px) {
+    .account-page .section-container {
+      width: 90vw;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .account-page .section-container {
+      flex-direction: column;
+    }
+
+    .user-account-column {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .user-order-column {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    .account-page th, 
+    .account-page td {
+      font-size: 12px;
+    }
+  }
+
 {% endstyle %}
+

@@ -34,7 +34,7 @@
         {% endfor %}     
       </ul>
 
-      {% comment %} search {% endcomment %}
+      {% comment %} actual search form {% endcomment %}
         <form class="search-form" action="/search" method="GET" role="search">
           <input type="text" name="q" value="{{ search.terms | escape }}" id="search-box" placeholder="search">
           <button type='submit' class='bx bx-search-alt-2'></button>
@@ -43,35 +43,38 @@
 
       {% comment %} customer login {% endcomment %}
       <ul class="link-{{ section.id }} user-icons">
+        <li>
+          {% comment %} search icon (placeholder) {% endcomment %}
+          <a><i class='bx bx-search-alt-2 icon' id='search_btn' ><span class="tooltip">Search</span></i></a>
+        </li>
         {% if shop.customer_accounts_enabled %}
           {% if customer %}
             <li>
-              <a href="{{ routes.account_url }}">Account</a>
-            </li>
-            <li>
-              <a href="{{ routes.account_logout_url }}">Logout</a>
+              {% comment %} logged in customer {% endcomment %}
+              <a href="{{ routes.account_url }}"><i class='bx bxs-user icon'><span class="tooltip">User</span></i></a>
             </li>
           {% else %}
             <li>
-              {% comment %} search (placeholder) {% endcomment %}
-              <a><i class='bx bx-search-alt-2 icon' id='search_btn' ></i></a>
-            </li>
-            <li>
-              <a href="{{ routes.account_login_url }}"><i class='bx bxs-user icon' ></i></a>
+              {% comment %} to log in customer {% endcomment %}
+              <a href="{{ routes.account_login_url }}"><i class='bx bx-user icon' ><span class="tooltip">Login</span></i></a>
             </li>
           {% endif %}
-
-          {% if cart.item_count > 0 %}
-            <li><a href="/cart" class="new-cart"><i class='bx bxs-cart-alt icon' ></i></a></li>
-          {% else %}
-            <li><a href="/cart" class="new-cart"><i class='bx bx-cart-alt icon'></i></a></li>
-          {% endif %}
-
-            {% comment %} box menu {% endcomment %}
-            <li>
-              <i class='bx bx-menu'></i>
-            </li>
         {% endif %}
+
+        {% if cart.item_count > 0 %}
+          <li>
+            <a href="/cart" class="new-cart"><i class='bx bxs-cart-alt icon' ><span class="tooltip">Cart</span></i></a>
+          </li>
+        {% else %}
+          <li>
+            <a href="/cart" class="new-cart"><i class='bx bx-cart-alt icon'><span class="tooltip">Cart</span></i></a>
+          </li>
+        {% endif %}
+
+        {% comment %} box menu {% endcomment %}
+        <li>
+          <i class='bx bx-menu icon'></i>
+        </li>
       </ul>
 
     </div>
@@ -84,7 +87,7 @@
     background: {{ section.settings.navbar_background_color }};
     width: 100%;
     height: {{ section.settings.section_height }}px;
-    z-index: 999;
+    z-index: 9;
     transition: all .15s ease-in-out;
     /* max-width: 1920px; */
     display: flex;
@@ -103,12 +106,18 @@
     justify-content: space-between;
   }
 
-  /* IF POSITION FIXED */
+  /* IF NAV POSITION FIXED */
   {% if section.settings.navbar_fixed_position == true %}
     .sticky {
       position: fixed;
       background: {{ section.settings.sticky_nav_color }};
       opacity: {{ section.settings.sticky_nav_opacity | divided_by: 100.0 }};
+    }
+  {% endif %}
+
+  {% if section.settings.show_bottom_border %}
+    nav {
+      border-bottom: 1px solid #353a3d;
     }
   {% endif %}
 
@@ -131,25 +140,20 @@
     font-size: {{ section.settings.store_name_size }}px;
     color: {{ section.settings.store_name_color }};
     font-weight: {{ section.settings.store_name_font_weight }};
-    transition: color 0.15s ease;
-    padding: 10px;
+    padding: 4px;
   }
 
-  .navbar-{{ section.id }} .store-name:hover {
-    color: {{ section.settings.store_name_hover_color }};
-  }
-
+  /* NAV LINKS */
   .link-{{ section.id }} {
     display: flex;
   }
 
   .link-{{ section.id }} li {
     list-style: none;
+    margin: 1rem;
   }
 
-  /* nav links */
   .link-{{ section.id }} li a {
-    margin-right: 2rem;
     font-size: {{ section.settings.navlist_font_size }}px;
     font-weight: {{ section.settings.navlist_font_weight }};
     color: {{ section.settings.navlist_font_color }};
@@ -159,28 +163,27 @@
   .link-{{ section.id }} li a:hover {
     color: {{ section.settings.navlist_hover_color }};
   }
-
-  /* search */
+  
+  /* SEARCH FORM */
   .navbar-{{ section.id }} .search-form {
     position: absolute;
-    top: 130%;
+    top: {{ section.settings.section_height}}px;
     right: 0;
     width: 300px;
     height: 35px;
     background: #fff;
+    border: 1px, solid #ccc;
     border-radius: 5px;
     padding: 10px;
     overflow: hidden;
     display: none;
     align-items: center;
     box-shadow: 0 0 8px #ccc;
-    /* transform: translateX(900px); */
     transition: all .25s ease-in-out;
-    z-index: 999;
+    z-index: 9;
   }
 
   .search-active {
-    /* transform: translateX(0) !important; */
     display: flex !important;
   }
 
@@ -202,7 +205,7 @@
     color: #2e393d;
   }
 
-  /* cart experiment */
+  /* cart icon */
   .new-cart {
     position: relative;
   }
@@ -210,26 +213,25 @@
   .icon {
     font-size: {{ section.settings.icon_size }}px;
     cursor: pointer;
-
+    transition: opacity .25s ease-in-out;
   }
 
   {% if cart.item_count > 0 %}
-  .new-cart::after {
-    content: "{{ cart.item_count }}";
-    position: absolute;
-    bottom: -5px;
-    /* right: -21px; */
-    background: {{ section.settings.navlist_font_color }};
-    font-size: 10px;
-    font-weight: 600;
-    color: {{ section.settings.navlist_hover_color }};
-    width: 16px;
-    height: 15px;
-    text-align: center;
-    border-radius: 3px;
-  }
+    .new-cart::after {
+      content: "{{ cart.item_count }}";
+      position: absolute;
+      bottom: -5px;
+      background: {{ section.settings.navlist_font_color }};
+      font-size: 10px;
+      font-weight: 500;
+      color: {{ section.settings.navlist_hover_color }};
+      width: 16px;
+      text-align: center;
+      border-radius: 3px;
+      padding: 1px 0;
+    }
   {% endif %}
-  /* end cart experiment */
+
 
   .bx-menu {
     font-size: {{ section.settings.icon_size }}px;
@@ -244,21 +246,62 @@
       display: inline-block;
       position: relative;
     }
-    .hover-underline-{{ section.id }}:after {
+    .hover-underline-{{ section.id }}::after {
       content: "";
       position: absolute;
       width: 100%;
       transform: scale(0);
-      height: 1px;
+      height: 2px;
       bottom: -3px;
       left: 0;
       background-color: {{ section.settings.navlist_hover_color }};
       transform-origin: bottom right;
       transition: transform .15s ease-out;
     }
-    .hover-underline-{{ section.id }}:hover:after {
+    .hover-underline-{{ section.id }}:hover::after {
       transform: scale(1);
       transform-origin: bottom left;
+    }
+  {% endif %}
+
+  /* IF SHOW ACTIVE MENU */
+  {% if section.settings.show_active_menu %}
+    .is-active {
+      color: {{ section.settings.navlist_hover_color }} !important;
+    }
+  {% endif %}
+
+
+  /* TOOLTIP */
+  .nav-container-{{ section.id }} li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  {% if section.settings.en_tooltip %}
+    .icon {
+      position: relative;
+    }
+
+    .tooltip {
+      font-size: 12px;
+      position: absolute;
+      bottom: -14px;
+      left: 0;
+      color: {{ section.settings.navlist_hover_color }};
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .25s ease-in-out;
+    }
+
+    .icon:hover .tooltip {
+      opacity: 1;
+    }
+  {% else %}
+    .tooltip {
+      display: none;
     }
   {% endif %}
 
@@ -271,6 +314,7 @@
 
   @media screen and (max-width: 768px) {
     .menu-items {
+      width: 50%;
       position: absolute;
       justify-content: space-around;
       top: {{ section.settings.section_height}}px;
@@ -279,24 +323,36 @@
       flex-direction: column;
       background: {{ section.settings.navbar_background_color }};
       border-radius: 5px;
-      z-index: 999;
       display: none;
+      z-index: 9;
     }
 
     .menu-items li {
       padding: 10px 0;
     }
 
-    .active {
+    .menu-active {
       display: block;
     }
 
     .bx-menu {
       display: block;
     }
+
+    .navbar-{{ section.id }} .search-form {
+      width: 50%;
+    }
   }
 
+  @media screen and (max-width: 500px) {
+    .menu-items {
+      width: 100%;
+    }
 
+    .navbar-{{ section.id }} .search-form {
+      width: 100%;
+    }
+  }
 {% endstyle %}
 
 {% schema %}
@@ -403,12 +459,6 @@
     },
     {
       "type": "color",
-      "id": "store_name_hover_color",
-      "label": "Store Name Hover Color",
-      "default": "#f57224"
-    },
-    {
-      "type": "color",
       "id": "navlist_font_color",
       "label": "Menu Font Color",
       "default": "#000"
@@ -469,7 +519,7 @@
           "label": "Regular"
         },
         {
-          "value": "700",
+          "value": "500",
           "label": "Bold"
         }
       ],
@@ -489,11 +539,17 @@
           "label": "Regular"
         },
         {
-          "value": "700",
+          "value": "500",
           "label": "Bold"
         }
       ],
       "default": "400"
+    },
+    {
+      "type": "checkbox",
+      "id": "en_tooltip",
+      "label": "Enable Icon Tooltip",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -506,6 +562,18 @@
       "id": "hover_underline",
       "label": "Hover Underline",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_active_menu",
+      "label": "Show Active Menu",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "label": "Show Bottom Border",
+      "default": false
     }
   ]
 }
@@ -517,21 +585,30 @@
   window.addEventListener('scroll', function(){
     let nav = document.querySelector('nav');
     nav.classList.toggle('sticky', window.scrollY > 0);
-  })
+  });
 
 
   {% comment %} search toggle {% endcomment %}
   const searchForm = document.querySelector('.search-form');
   document.querySelector('#search_btn').onclick = () => {
     searchForm.classList.toggle('search-active');
-  }
+  };
 
 
   {% comment %} menu toggle {% endcomment %}
-  const menuIcon = document.querySelector('.bx-menu')
+  const menuIcon = document.querySelector('.bx-menu');
   const menuItems = document.querySelector('.menu-items');
   menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x')
-    menuItems.classList.toggle('active');
-  }
+    menuIcon.classList.toggle('bx-x');
+    menuItems.classList.toggle('menu-active');
+  };
+
+  {% comment %} IS ACTIVE {% endcomment %}
+  document.querySelectorAll(".link-{{ section.id }} li a").forEach((link) => {
+    if (link.href === window.location.href) {
+        link.classList.add("is-active");
+        {% comment %} link.setAttribute("aria-current", "page"); {% endcomment %}
+    }
+});
+
 </script>

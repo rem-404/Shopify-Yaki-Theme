@@ -36,9 +36,22 @@
 
   {% section 'footer' %}
 
-  {% comment %} Initialize Animate On Scroll {% endcomment %}
   <script>
+    {% comment %} Initialize Animate On Scroll {% endcomment %}
     AOS.init();
+
+
+    {% comment %} Element height {% endcomment %}
+    const headerHeight = document.querySelector('#shopify-section-header > nav:nth-child(1)').offsetHeight;
+    console.log(`Header Height: ${headerHeight}`);
+    
+    const footerContainer = document.querySelector('.footer-container');
+    const footerHeight = footerContainer ? footerContainer.offsetHeight : 0;
+
+    console.log(`Footer Height: ${footerHeight}`);
+
+    const body = document.querySelector('body');
+    {% comment %} body.style.minHeight = '100vh'; {% endcomment %}
   </script>
   
 </body>

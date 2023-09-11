@@ -7,7 +7,7 @@
           <img src="{{ section.settings.logo | img_url: 'medium' }}" alt="">
         {% endif %}
         {% if section.settings.store_name != blank %}
-          <a class="store-name" href="#">{{ section.settings.store_name }}</a>
+          <a class="store-name" href="/">{{ section.settings.store_name }}</a>
         {% endif %}
       </div>
       
@@ -51,7 +51,7 @@
           {% if customer %}
             <li>
               {% comment %} logged in customer {% endcomment %}
-              <a href="{{ routes.account_url }}"><i class='bx bxs-user icon'><span class="tooltip">User</span></i></a>
+              <a href="{{ routes.account_url }}"><i class='bx bxs-user icon'><span class="tooltip">Account</span></i></a>
             </li>
           {% else %}
             <li>
@@ -73,7 +73,7 @@
 
         {% comment %} box menu {% endcomment %}
         <li>
-          <i class='bx bx-menu icon'></i>
+          <i class='bx bx-menu iconx'></i>
         </li>
       </ul>
 
@@ -133,6 +133,7 @@
   /* LOGO */
   .navbar-{{ section.id }} img {
     width: {{ section.settings.logo_size }}px;
+    /* position: relative; */
   }
 
   /* STORE NAME */
@@ -172,13 +173,13 @@
     width: 300px;
     height: 35px;
     background: #fff;
-    border: 1px, solid #ccc;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     overflow: hidden;
     display: none;
     align-items: center;
-    box-shadow: 0 0 8px #ccc;
     transition: all .25s ease-in-out;
     z-index: 9;
   }
@@ -220,12 +221,13 @@
     .new-cart::after {
       content: "{{ cart.item_count }}";
       position: absolute;
-      bottom: -5px;
+      right: -10px;
+      bottom: -10px;
       background: {{ section.settings.navlist_font_color }};
-      font-size: 10px;
+      font-size: 8px;
       font-weight: 500;
       color: {{ section.settings.navlist_hover_color }};
-      width: 16px;
+      width: 14px;
       text-align: center;
       border-radius: 3px;
       padding: 1px 0;
@@ -283,17 +285,25 @@
   {% if section.settings.en_tooltip %}
     .icon {
       position: relative;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .tooltip {
       font-size: 12px;
       position: absolute;
       bottom: -14px;
-      left: 0;
+      /* left: 0; */
       color: {{ section.settings.navlist_hover_color }};
+      /* color: red; */
       pointer-events: none;
       opacity: 0;
       transition: opacity .25s ease-in-out;
+
+      text-align: center;
     }
 
     .icon:hover .tooltip {
@@ -318,14 +328,19 @@
       position: absolute;
       justify-content: space-around;
       top: {{ section.settings.section_height}}px;
+      /* top: 0; */
       right: 0;
       padding: 0 20px;
       flex-direction: column;
       background: {{ section.settings.navbar_background_color }};
       border-radius: 5px;
       display: none;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+      border: 1px solid #ccc;
       z-index: 9;
     }
+
+
 
     .menu-items li {
       padding: 10px 0;
@@ -449,7 +464,7 @@
       "type": "color",
       "id": "navbar_background_color",
       "label": "Navbar Background",
-      "default": "#fff"
+      "default": "#f5f5f5"
     },
     {
       "type": "color",
@@ -582,12 +597,12 @@
 
 <script>
   {% comment %} stiky navbar {% endcomment %}
-  window.addEventListener('scroll', function(){
+  window.addEventListener('scroll', () => {
     let nav = document.querySelector('nav');
     nav.classList.toggle('sticky', window.scrollY > 0);
   });
 
-
+  
   {% comment %} search toggle {% endcomment %}
   const searchForm = document.querySelector('.search-form');
   document.querySelector('#search_btn').onclick = () => {
@@ -607,7 +622,6 @@
   document.querySelectorAll(".link-{{ section.id }} li a").forEach((link) => {
     if (link.href === window.location.href) {
         link.classList.add("is-active");
-        {% comment %} link.setAttribute("aria-current", "page"); {% endcomment %}
     }
 });
 

@@ -4,9 +4,413 @@
       "type": "index",
       "settings": {
       }
+    },
+    "1f6ccd74-27c1-496f-982d-9be5837ef432": {
+      "type": "image-slider",
+      "blocks": {
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_heading-1": {
+          "type": "slider_content_heading",
+          "settings": {
+            "heading_font_size": 88,
+            "heading_text_shadow_spread_size": 8,
+            "heading_text_shadow_position_y": 0,
+            "heading_text_shadow_position_x": 0,
+            "heading_font_color": "#353a3d",
+            "heading_text_shadow_color": "#ccc",
+            "title": "Main Heading",
+            "heading_y_position": 0,
+            "heading_font_weight": "400",
+            "heading_show_text_shadow": false
+          }
+        },
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_desc-1": {
+          "type": "slider_content_desc",
+          "settings": {
+            "description": "Store Description",
+            "description_font_size": 43,
+            "description_padding_y": 10,
+            "description_font_color": "#353a3d",
+            "description_font_weight": "400"
+          }
+        },
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_url-1": {
+          "type": "slider_content_url",
+          "settings": {
+            "button_border_radius": 0,
+            "button_size": 10,
+            "button_font_size": 16,
+            "button_border_thickness": 1,
+            "button_shadow_spread_size": 8,
+            "button_shadow_position_y": 0,
+            "button_shadow_position_x": 0,
+            "button_text_shadow_spread_size": 8,
+            "button_text_shadow_position_y": 0,
+            "button_text_shadow_position_x": 0,
+            "button_font_color": "#fff",
+            "button_background_color": "#353a3d",
+            "button_font_hover_color": "#fff",
+            "button_hover_color": "#000",
+            "button_border_color": "#000",
+            "button_border_hover_color": "#f57224",
+            "button_shadow_color": "#ccc",
+            "button_text_shadow_color": "#ccc",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "transparent_button": false,
+            "button_show_border": false,
+            "button_show_shadow": false,
+            "button_text_shadow": false
+          }
+        }
+      },
+      "block_order": [
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_heading-1",
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_desc-1",
+        "template--20585801908528__1f6ccd74-27c1-496f-982d-9be5837ef432-slider_content_url-1"
+      ],
+      "settings": {
+        "image_slider_overlay_opacity": 20,
+        "image_slider_overlay_color": "#f57224",
+        "image_slider_background_color": "#fff",
+        "image_slide_indicator_border": "#2e393d",
+        "image_slide_indicator_background": "#2e393d",
+        "image_slider_banner_size": "800"
+      }
+    },
+    "8c46fb04-da2b-4b2f-9cf9-db59842c0ea4": {
+      "type": "banner",
+      "blocks": {
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_heading-1": {
+          "type": "banner_content_heading",
+          "settings": {
+            "heading_font_size": 128,
+            "heading_text_shadow_spread_size": 8,
+            "heading_text_shadow_position_y": 0,
+            "heading_text_shadow_position_x": 0,
+            "heading_font_color": "#ffffff",
+            "heading_text_shadow_color": "#ccc",
+            "title": "Main Heading",
+            "heading_y_position": 0,
+            "heading_font_weight": "100",
+            "heading_show_text_shadow": true
+          }
+        },
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_desc-1": {
+          "type": "banner_content_desc",
+          "settings": {
+            "description": "Store Description",
+            "description_font_size": 40,
+            "description_padding_y": 10,
+            "description_font_color": "#ffffff",
+            "description_font_weight": "400"
+          }
+        },
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_url-1": {
+          "type": "banner_content_url",
+          "settings": {
+            "button_border_radius": 36,
+            "button_size": 14,
+            "button_font_size": 20,
+            "button_border_thickness": 1,
+            "button_shadow_spread_size": 8,
+            "button_shadow_position_y": 0,
+            "button_shadow_position_x": 0,
+            "button_text_shadow_spread_size": 8,
+            "button_text_shadow_position_y": 0,
+            "button_text_shadow_position_x": 0,
+            "button_font_color": "#fff",
+            "button_background_color": "#353a3d",
+            "button_font_hover_color": "#fff",
+            "button_hover_color": "#000",
+            "button_border_color": "#ffffff",
+            "button_border_hover_color": "#ffffff",
+            "button_shadow_color": "#ffffff",
+            "button_text_shadow_color": "#ffffff",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "transparent_button": true,
+            "button_show_border": true,
+            "button_show_shadow": true,
+            "button_text_shadow": true
+          }
+        }
+      },
+      "block_order": [
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_heading-1",
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_desc-1",
+        "template--20585801908528__8c46fb04-da2b-4b2f-9cf9-db59842c0ea4-banner_content_url-1"
+      ],
+      "settings": {
+        "image_overlay_opacity": 70,
+        "section_top_margin": 0,
+        "section_bottom_margin": 0,
+        "section_inner_padding": 10,
+        "overlay_color": "#000",
+        "banner_size": "800"
+      }
+    },
+    "8cbec27a-f682-4456-9331-35cbe757ad9a": {
+      "type": "rich-text",
+      "blocks": {
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_heading-1": {
+          "type": "richtext_content_heading",
+          "settings": {
+            "heading_font_size": 50,
+            "heading_text_shadow_spread_size": 8,
+            "heading_text_shadow_position_y": 0,
+            "heading_text_shadow_position_x": 0,
+            "heading_font_color": "#353a3d",
+            "heading_text_shadow_color": "#ccc",
+            "title": "Talk About Your Store",
+            "heading_y_position": 0,
+            "heading_font_weight": "400",
+            "heading_show_text_shadow": false
+          }
+        },
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_desc-1": {
+          "type": "richtext_content_desc",
+          "settings": {
+            "description": "Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.",
+            "description_font_size": 16,
+            "description_padding_y": 10,
+            "description_font_color": "#353a3d",
+            "description_font_weight": "400"
+          }
+        },
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_url-1": {
+          "type": "richtext_content_url",
+          "settings": {
+            "button_border_radius": 0,
+            "button_size": 10,
+            "button_font_size": 16,
+            "button_border_thickness": 1,
+            "button_shadow_spread_size": 8,
+            "button_shadow_position_y": 0,
+            "button_shadow_position_x": 0,
+            "button_text_shadow_spread_size": 8,
+            "button_text_shadow_position_y": 0,
+            "button_text_shadow_position_x": 0,
+            "button_font_color": "#fff",
+            "button_background_color": "#353a3d",
+            "button_font_hover_color": "#fff",
+            "button_hover_color": "#000",
+            "button_border_color": "#000",
+            "button_border_hover_color": "#f57224",
+            "button_shadow_color": "#ccc",
+            "button_text_shadow_color": "#ccc",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "transparent_button": false,
+            "button_show_border": false,
+            "button_show_shadow": false,
+            "button_text_shadow": false
+          }
+        }
+      },
+      "block_order": [
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_heading-1",
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_desc-1",
+        "template--20585801908528__8cbec27a-f682-4456-9331-35cbe757ad9a-richtext_content_url-1"
+      ],
+      "settings": {
+        "section_content_alignment": "center",
+        "richtext_width": 60,
+        "section_padding_y": 32,
+        "section_padding_x": 10,
+        "section_margin_x": 0,
+        "section_background_color": "#fff"
+      }
+    },
+    "e04a0b68-edd3-459a-ac12-c16d123ab0c8": {
+      "type": "product-slider",
+      "settings": {
+        "featured-collection": "",
+        "section_width": 60,
+        "section_padding_y": 40,
+        "title_font_size": 16,
+        "price_font_size": 14,
+        "cards_border_radius": 0,
+        "section_background_color": "#ffffff",
+        "title_font_color": "#353a3d",
+        "price_font_color": "#353a3d",
+        "card_body_color": "#f5f5f5",
+        "card_border_color": "#ccc",
+        "show_border": true,
+        "show_shadow": false
+      }
+    },
+    "81259c10-1bfa-425b-a59d-05157ba5c00e": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_heading-1": {
+          "type": "text_heading",
+          "settings": {
+            "title": "Image With Text",
+            "heading_font_size": 40,
+            "heading_text_shadow_spread_size": 8,
+            "heading_text_shadow_position_y": 0,
+            "heading_text_shadow_position_x": 0,
+            "heading_font_color": "#353a3d",
+            "heading_text_shadow_color": "#ccc",
+            "heading_y_position": 0,
+            "heading_font_weight": "400",
+            "heading_show_text_shadow": false
+          }
+        },
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_content_desc-1": {
+          "type": "text_content_desc",
+          "settings": {
+            "description": "Pair text with an image to focus on your chosen product.",
+            "description_font_size": 16,
+            "description_padding_y": 0,
+            "description_font_color": "#353a3d",
+            "description_font_weight": "400"
+          }
+        },
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_content_url-1": {
+          "type": "text_content_url",
+          "settings": {
+            "button_border_radius": 0,
+            "button_size": 10,
+            "button_font_size": 16,
+            "button_border_thickness": 1,
+            "button_shadow_spread_size": 8,
+            "button_shadow_position_y": 0,
+            "button_shadow_position_x": 0,
+            "button_text_shadow_spread_size": 8,
+            "button_text_shadow_position_y": 0,
+            "button_text_shadow_position_x": 0,
+            "button_font_color": "#fff",
+            "button_background_color": "#353a3d",
+            "button_font_hover_color": "#fff",
+            "button_hover_color": "#000",
+            "button_border_color": "#000",
+            "button_border_hover_color": "#f57224",
+            "button_shadow_color": "#ccc",
+            "button_text_shadow_color": "#ccc",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "transparent_button": false,
+            "button_show_border": false,
+            "button_show_shadow": false,
+            "button_text_shadow": false
+          }
+        }
+      },
+      "block_order": [
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_heading-1",
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_content_desc-1",
+        "template--20585801908528__81259c10-1bfa-425b-a59d-05157ba5c00e-text_content_url-1"
+      ],
+      "settings": {
+        "section_width": 60,
+        "section_padding_y": 20,
+        "image_size": 100,
+        "image_border_radius": 0,
+        "image_shadow_spread_size": 8,
+        "image_shadow_position_y": 0,
+        "image_shadow_position_x": 0,
+        "section_background_color": "#fff",
+        "image_background_color": "#f5f5f5",
+        "text_background_color": "#fff",
+        "image_shadow_color": "#ccc",
+        "desktop_image_placement": "row",
+        "section_size": "400",
+        "text_content_alignment": "flex-start",
+        "image_fit_by": "width",
+        "show_image_shadow": false
+      }
+    },
+    "ee7a664c-772c-4a55-8ff5-2839489e3edc": {
+      "type": "image-with-text",
+      "blocks": {
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_heading-1": {
+          "type": "text_heading",
+          "settings": {
+            "title": "Image With Text",
+            "heading_font_size": 40,
+            "heading_text_shadow_spread_size": 8,
+            "heading_text_shadow_position_y": 0,
+            "heading_text_shadow_position_x": 0,
+            "heading_font_color": "#353a3d",
+            "heading_text_shadow_color": "#ccc",
+            "heading_y_position": 0,
+            "heading_font_weight": "400",
+            "heading_show_text_shadow": false
+          }
+        },
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_content_desc-1": {
+          "type": "text_content_desc",
+          "settings": {
+            "description": "Pair text with an image to focus on your chosen product.",
+            "description_font_size": 16,
+            "description_padding_y": 0,
+            "description_font_color": "#353a3d",
+            "description_font_weight": "400"
+          }
+        },
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_content_url-1": {
+          "type": "text_content_url",
+          "settings": {
+            "button_border_radius": 0,
+            "button_size": 10,
+            "button_font_size": 16,
+            "button_border_thickness": 1,
+            "button_shadow_spread_size": 8,
+            "button_shadow_position_y": 0,
+            "button_shadow_position_x": 0,
+            "button_text_shadow_spread_size": 8,
+            "button_text_shadow_position_y": 0,
+            "button_text_shadow_position_x": 0,
+            "button_font_color": "#fff",
+            "button_background_color": "#353a3d",
+            "button_font_hover_color": "#fff",
+            "button_hover_color": "#000",
+            "button_border_color": "#000",
+            "button_border_hover_color": "#f57224",
+            "button_shadow_color": "#ccc",
+            "button_text_shadow_color": "#ccc",
+            "button_label": "Shop Now",
+            "button_link": "",
+            "transparent_button": false,
+            "button_show_border": false,
+            "button_show_shadow": false,
+            "button_text_shadow": false
+          }
+        }
+      },
+      "block_order": [
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_heading-1",
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_content_desc-1",
+        "template--20585801908528__ee7a664c-772c-4a55-8ff5-2839489e3edc-text_content_url-1"
+      ],
+      "settings": {
+        "section_width": 60,
+        "section_padding_y": 20,
+        "image_size": 100,
+        "image_border_radius": 0,
+        "image_shadow_spread_size": 8,
+        "image_shadow_position_y": 0,
+        "image_shadow_position_x": 0,
+        "section_background_color": "#fff",
+        "image_background_color": "#f5f5f5",
+        "text_background_color": "#fff",
+        "image_shadow_color": "#ccc",
+        "desktop_image_placement": "row-reverse",
+        "section_size": "400",
+        "text_content_alignment": "flex-end",
+        "image_fit_by": "width",
+        "show_image_shadow": false
+      }
     }
   },
   "order": [
-    "homepage"
+    "homepage",
+    "1f6ccd74-27c1-496f-982d-9be5837ef432",
+    "8c46fb04-da2b-4b2f-9cf9-db59842c0ea4",
+    "8cbec27a-f682-4456-9331-35cbe757ad9a",
+    "e04a0b68-edd3-459a-ac12-c16d123ab0c8",
+    "81259c10-1bfa-425b-a59d-05157ba5c00e",
+    "ee7a664c-772c-4a55-8ff5-2839489e3edc"
   ]
 }

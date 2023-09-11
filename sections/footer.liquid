@@ -327,6 +327,17 @@
           }
         ]
       }
+    ],
+    "presets": [
+      {
+        "category": "footer",
+        "name": "Footer",
+        "blocks": [
+          {
+            "type": "text"
+          }
+        ]
+      }
     ]
   }
 {% endschema %}
@@ -339,6 +350,11 @@
   
   const windowHeight = document.body.scrollHeight;
   const footer = document.querySelector('footer');
+
+  {% comment %} if (window.innerWidth > 500 && windowHeight < 1000) {
+    footer.classList.add('fixed-footer');
+  } {% endcomment %}
+
   if (windowHeight < 1000) {
     footer.classList.add('fixed-footer');
   }

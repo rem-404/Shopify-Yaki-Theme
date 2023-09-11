@@ -110,8 +110,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    z-index: 90;
+    z-index: 8;
   }
 
   /* Section overlay */
@@ -335,6 +334,7 @@
   @media screen and (max-width: 768px) {
     .text-overlay-{{ section.id }} h1 {
       font-size: 96px;
+      text-align: center;
     }
 
     .text-overlay-{{ section.id }} .description-1 {
@@ -717,19 +717,19 @@
           "type": "color",
           "id": "button_background_color",
           "label": "Background Color",
-          "default": "#000"
+          "default": "#353a3d"
         },
         {
           "type": "color",
           "id": "button_font_hover_color",
           "label": "Hover Font Color",
-          "default": "#000"
+          "default": "#fff"
         },
         {
           "type": "color",
           "id": "button_hover_color",
           "label": "Hover Background Color",
-          "default": "#ccc"
+          "default": "#000"
         },
         {
           "type": "color",

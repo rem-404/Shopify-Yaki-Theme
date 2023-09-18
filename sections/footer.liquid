@@ -29,16 +29,22 @@
   .{{ section.id }} {
     width: 100%;
     height: auto;
-    /* padding: {{ section.settings.footer_padding_y }}px 0; */
-    height: {{ section.settings.section_height }}px;
+    padding: {{ section.settings.footer_padding }}px 0;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     background: {{ section.settings.footer_background }};
-
-    /* position: fixed; */
-    /* bottom: 0; */
   }
+
+  {% if section.settings.footer_height == "auto" %}
+    .{{ section.id }} {
+      height: auto;
+    }
+  {% else %}
+  .{{ section.id }} {
+      height: {{ section.settings.footer_height }}px;
+    }
+  {% endif %}
   
   .{{ section.id }} .footer-container {
     display: grid;
@@ -143,13 +149,13 @@
       },
       {
         "type": "range",
-        "id": "section_height",
-        "min": 100,
-        "max": 200,
+        "id": "footer_padding",
+        "min": 0,
+        "max": 100,
         "step": 1,
         "unit": "px",
-        "label": "Footer Height",
-        "default": 100
+        "label": "Footer Padding",
+        "default": 30
       },
       {
         "type": "range",
@@ -160,6 +166,30 @@
         "unit": "px",
         "label": "Column Gap",
         "default": 10
+      },
+      {
+        "type": "select",
+        "id": "footer_height",
+        "label": "Footer Height",
+        "options": [
+          {
+            "value": "100",
+            "label": "100px"
+          },
+          {
+            "value": "200",
+            "label": "200px"
+          },
+          {
+            "value": "300",
+            "label": "300px"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ],
+        "default": "auto"
       },
       {
         "type": "checkbox",
